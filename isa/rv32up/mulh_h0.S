@@ -1,0 +1,56 @@
+# See LICENSE for license details.
+
+#*****************************************************************************
+# mulh_h0.S
+#-----------------------------------------------------------------------------
+#
+# Test mulh.h0 instruction (high multiply halfword 0).
+# rd = (sext(rs1) * sext(rs2[15:0])) >> 32
+#
+
+#include "riscv_test.h"
+#include "test_macros.h"
+
+RVTEST_RV32U
+RVTEST_CODE_BEGIN
+
+  #-------------------------------------------------------------
+  # Arithmetic tests
+  #-------------------------------------------------------------
+
+  # Basic multiply: 0x00010000 * 0x0001 = 0x0000000100000000, high = 1
+  TEST_RR_OP( 2,  mulh.h0, 0x00000001, 0x00010000, 0x00010000 );
+  
+  # Multiply with larger values: 0x00100000 * 0x0100 = 0x0010000000000, high = 0x1000
+  TEST_RR_OP( 3,  mulh.h0, 0x00001000, 0x00100000, 0x01000000 );
+  
+  # Negative multiply: 0xffffffff * 0x0001 = 0xffffffffffffffff, high = 0xffffffff
+  TEST_RR_OP( 4,  mulh.h0, 0xffffffff, 0xffffffff, 0x00010000 );
+  
+  # Halfword selection (lower 16 bits of rs2): 0x00010000 * 0x1234 = 0x12340000, high = 0
+  TEST_RR_OP( 5,  mulh.h0, 0x00000000, 0x00010000, 0x12340000 );
+  
+  # Negative result: 0xffffffff * 0xffff = 0xffffffff0001, high = 0xffffffff
+  TEST_RR_OP( 6,  mulh.h0, 0xffffffff, 0xffffffff, 0xffff0000 );
+  
+  # Zero multiply: 0 * 100 = 0
+  TEST_RR_OP( 7,  mulh.h0, 0x00000000, 0x00000000, 0x00640000 );
+
+  #-------------------------------------------------------------
+  # Source/Destination tests
+  #-------------------------------------------------------------
+
+  TEST_RR_SRC1_EQ_DEST( 8, mulh.h0, 1, 0x00010000, 0x00010000 );
+  TEST_RR_SRC2_EQ_DEST( 9, mulh.h0, 1, 0x00010000, 0x00010000 );
+
+  TEST_PASSFAIL
+
+RVTEST_CODE_END
+
+  .data
+RVTEST_DATA_BEGIN
+
+  TEST_DATA
+
+RVTEST_DATA_END
+

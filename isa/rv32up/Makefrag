@@ -1,0 +1,91 @@
+#=======================================================================
+# Makefrag for rv32up tests
+#-----------------------------------------------------------------------
+
+rv32up_sc_tests = \
+	aadd aaddu addd asub asubu \
+	sadd saddu ssub ssubu sati usati \
+	srari ssh1sadd ssha sshar sslai \
+	mseq mslt msltu \
+	wadd wadda waddu waddau wsub wsuba wsubu wsubau \
+	wmul wmulsu wmulu wmacc wmaccsu wmaccu \
+	wsll wslli wsla wslai \
+	wzip8p wzip16p \
+	macc_h00 macc_h01 macc_h11 \
+	maccsu_h00 maccsu_h11 \
+	maccu_h00 maccu_h01 maccu_h11 \
+	mhacc mhacc_h0 mhacc_h1 \
+	mhaccsu mhaccsu_h0 mhaccsu_h1 \
+	mhaccu mhracc mhraccsu mhraccu \
+	mqacc_h00 mqacc_h01 mqacc_h11 \
+	mqracc_h00 mqracc_h01 mqracc_h11 \
+	mul_h00 mul_h01 mul_h11 \
+	mulh_h0 mulh_h1 \
+	mulhr mulhrsu mulhru \
+	mulhsu_h0 mulhsu_h1 \
+	mulq mulqr \
+	mulsu_h00 mulsu_h11 \
+	mulu_h00 mulu_h01 mulu_h11 \
+	nclip nclipi nclipiu nclipr nclipri nclipriu nclipru nclipu \
+	nsra nsrai nsrar nsrari nsrl nsrli \
+	paadd_db paadd_dh paadd_dw \
+	paaddu_db paaddu_dh paaddu_dw \
+	paas_dhx pasa_dhx pas_dhx \
+	pabd_db pabd_dh pabdu_db pabdu_dh \
+	padd_db padd_dbs padd_dh padd_dhs padd_dw padd_dws \
+	pasub_db pasub_dh pasub_dw \
+	pasubu_db pasubu_dh pasubu_dw \
+	pli_db pli_dh plui_dh \
+	pmax_db pmax_dh pmax_dw \
+	pmaxu_db pmaxu_dh pmaxu_dw \
+	pmin_db pmin_dh pmin_dw \
+	pminu_db pminu_dh pminu_dw \
+	pmseq_db pmseq_dh pmseq_dw \
+	pmslt_db pmslt_dh pmslt_dw \
+	pmsltu_db pmsltu_dh pmsltu_dw \
+	pm2wadd_h pm2wadd_hx pm2wadda_h pm2wadda_hx \
+	pm2waddu_h pm2waddau_h pm2waddsu_h pm2waddasu_h \
+	pm2wsub_h pm2wsub_hx pm2wsuba_h pm2wsuba_hx \
+	pmqwacc pmqwacc_h pmqrwacc pmqrwacc_h \
+	pnclip_bs pnclip_hs pnclipi_b pnclipi_h \
+	pnclipiu_b pnclipiu_h pnclipr_bs pnclipr_hs \
+	pnclipri_b pnclipri_h pnclipriu_b pnclipriu_h \
+	pnclipru_bs pnclipru_hs pnclipu_bs pnclipu_hs \
+	pnsra_bs pnsra_hs pnsrai_b pnsrai_h \
+	pnsrar_bs pnsrar_hs pnsrari_b pnsrari_h \
+	pnsrl_bs pnsrl_hs pnsrli_b pnsrli_h \
+	ppaire_db ppaire_dh ppaireo_db ppaireo_dh \
+	ppairo_db ppairo_dh ppairoe_db ppairoe_dh \
+	predsum_dbs predsum_dhs predsumu_dbs predsumu_dhs \
+	psabs_db psabs_dh \
+	psadd_db psadd_dh psadd_dw \
+	psaddu_db psaddu_dh psaddu_dw \
+	psa_dhx psas_dhx pssa_dhx \
+	psati_dh psati_dw pusati_dh pusati_dw \
+	psext_dh_b psext_dw_b psext_dw_h \
+	psh1add_dh psh1add_dw \
+	psll_dbs psll_dhs psll_dws \
+	pslli_db pslli_dh pslli_dw \
+	psra_dbs psra_dhs psra_dws \
+	psrai_db psrai_dh psrai_dw \
+	psrari_dh psrari_dw \
+	psrl_dbs psrl_dhs psrl_dws \
+	psrli_db psrli_dh psrli_dw \
+	pssh1sadd_dh pssh1sadd_dw \
+	pssha_dhs pssha_dws psshar_dhs psshar_dws \
+	psslai_dh psslai_dw \
+	pssub_db pssub_dh pssub_dw \
+	pssubu_db pssubu_dh pssubu_dw \
+	psub_db psub_dh psub_dw \
+	pwadd_b pwadd_h pwaddu_b pwaddu_h \
+	pwadda_b pwadda_h pwaddau_b pwaddau_h \
+	pwsub_b pwsub_h pwsubu_b pwsubu_h \
+	pwsuba_b pwsuba_h pwsubau_b pwsubau_h \
+	pwmul_b pwmul_h pwmulu_b pwmulu_h pwmulsu_b pwmulsu_h \
+	pwmacc_h pwmaccu_h pwmaccsu_h \
+	pwsll_bs pwsll_hs pwslli_b pwslli_h \
+	pwsla_bs pwsla_hs pwslai_b pwslai_h
+
+rv32up_p_tests = $(addprefix rv32up-p-, $(rv32up_sc_tests))
+rv32up_v_tests = $(addprefix rv32up-v-, $(rv32up_sc_tests))
+
