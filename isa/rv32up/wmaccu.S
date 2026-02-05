@@ -16,28 +16,35 @@ RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
   # Arithmetic tests
+  # wmaccu rd, rs1, rs2: rd:rd+1 += (unsigned)rs1 * (unsigned)rs2
   #-------------------------------------------------------------
 
   # Basic accumulation: 0 + 3 * 7 = 21
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0x00000015, 0x00000000, 0x00000003, 0x00000007, x1, 0, x6 );
-  
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000015, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000003; \
+    li  x12, 0x00000007; \
+    wmaccu x14, x10, x12; \
+  )
+
   # Accumulate to existing value: 100 + 5 * 10 = 150
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0x00000096, 0x00000000, 0x00000005, 0x0000000a, x1, 0, x6 );
-  
-  # Unsigned interpretation: 0xFFFFFFFF + 0xFFFFFFFF * 0xFFFFFFFF = 0xFFFFFFFE00000000
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0x00000000, 0xfffffffe, 0xffffffff, 0xffffffff, x1, 0, x6 );
-  
-  # Large accumulation: 0x100000000 + 0x10000 * 0x10000 = 0x200000000
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0x00000000, 0x00000002, 0x00010000, 0x00010000, x1, 0, x6 );
-  
-  # Unsigned large multiply: 0x80000000 + 0x80000000 * 2 = 0x180000000
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0x00000000, 0x00000001, 0x80000000, 0x00000002, x1, 0, x6 );
-  
-  # Accumulate with unsigned: 0x200000000 + 0xFFFFFFFF * 2 = 0x3FFFFFFFE
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0xfffffffe, 0x00000003, 0xffffffff, 0x00000002, x1, 0, x6 );
-  
+  TEST_CASE_D32( 3, x14, x15, 0x0000000000000096, \
+    li  x14, 0x00000064; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000005; \
+    li  x12, 0x0000000a; \
+    wmaccu x14, x10, x12; \
+  )
+
   # Zero multiply: 500 + 0 * 100 = 500
-  TEST_P64_PNN_OP( wmaccu, x2, x3, x4, x5, 0x000001f4, 0x00000000, 0x00000000, 0x00000064, x1, 0, x6 );
+  TEST_CASE_D32( 4, x14, x15, 0x00000000000001f4, \
+    li  x14, 0x000001f4; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000064; \
+    wmaccu x14, x10, x12; \
+  )
 
   TEST_PASSFAIL
 

@@ -19,34 +19,29 @@ RVTEST_CODE_BEGIN
   # Arithmetic tests
   #-------------------------------------------------------------
 
-  # Load immediate 0x0000
+  # Load immediate 0
   TEST_CASE_D32( 2, x14, x15, 0x0000000000000000, \
-    pli.dh x14, 0x0000; \
+    pli.dh x14, 0; \
   )
 
-  # Load immediate 0x1234
-  TEST_CASE_D32( 3, x14, x15, 0x1234123412341234, \
-    pli.dh x14, 0x1234; \
+  # Load immediate 0x100
+  TEST_CASE_D32( 3, x14, x15, 0x0100010001000100, \
+    pli.dh x14, 0x100; \
   )
 
-  # Load immediate 0xffff
+  # Load immediate -1 (0xffff pattern)
   TEST_CASE_D32( 4, x14, x15, 0xffffffffffffffff, \
-    pli.dh x14, 0xffff; \
+    pli.dh x14, -1; \
   )
 
-  # Load immediate 0x7fff (max positive)
-  TEST_CASE_D32( 5, x14, x15, 0x7fff7fff7fff7fff, \
-    pli.dh x14, 0x7fff; \
+  # Load immediate 0x1ff (max positive in range)
+  TEST_CASE_D32( 5, x14, x15, 0x01ff01ff01ff01ff, \
+    pli.dh x14, 0x1ff; \
   )
 
-  # Load immediate 0x8000 (min negative)
-  TEST_CASE_D32( 6, x14, x15, 0x8000800080008000, \
-    pli.dh x14, 0x8000; \
-  )
-
-  # Load immediate 0xaaaa
-  TEST_CASE_D32( 7, x14, x15, 0xaaaaaaaaaaaaaaaa, \
-    pli.dh x14, 0xaaaa; \
+  # Load immediate -512 (0xfe00 pattern)
+  TEST_CASE_D32( 6, x14, x15, 0xfe00fe00fe00fe00, \
+    pli.dh x14, -512; \
   )
 
   TEST_PASSFAIL

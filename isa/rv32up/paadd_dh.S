@@ -21,55 +21,55 @@ RVTEST_CODE_BEGIN
 
   # Basic averaging add: (100 + 200) >> 1 = 150 for each halfword
   TEST_CASE_D32( 2, x14, x15, 0x0096009600960096, \
-    li  x11, 0x00640064; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00c800c8; \
-    li  x16, 0x00000000; \
-    paadd.dh x14, x11, x13; \
+    li  x10, 0x00640064; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00c800c8; \
+    li  x13, 0x00000000; \
+    paadd.dh x14, x10, x12; \
   )
 
   # Odd sum truncation: (3 + 4) >> 1 = 3 for each halfword
   TEST_CASE_D32( 3, x14, x15, 0x0003000300030003, \
-    li  x11, 0x00030003; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00040004; \
-    li  x16, 0x00000000; \
-    paadd.dh x14, x11, x13; \
+    li  x10, 0x00030003; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00040004; \
+    li  x13, 0x00000000; \
+    paadd.dh x14, x10, x12; \
   )
 
   # Negative numbers: (-100 + 200) >> 1 = 50 for each halfword
   TEST_CASE_D32( 4, x14, x15, 0x0032003200320032, \
-    li  x11, 0xff9cff9c; \
-    li  x12, 0xffffffff; \
-    li  x13, 0x00c800c8; \
-    li  x16, 0x00000000; \
-    paadd.dh x14, x11, x13; \
+    li  x10, 0xff9cff9c; \
+    li  x11, 0xffffffff; \
+    li  x12, 0x00c800c8; \
+    li  x13, 0x00000000; \
+    paadd.dh x14, x10, x12; \
   )
 
   # Zero cases
   TEST_CASE_D32( 5, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    paadd.dh x14, x11, x13; \
+    paadd.dh x14, x10, x12; \
   )
 
   # Large positive values: (32767 + 32767) >> 1 = 32767
   TEST_CASE_D32( 6, x14, x15, 0x7fff7fff7fff7fff, \
-    li  x11, 0x7fff7fff; \
-    li  x12, 0x00000000; \
-    li  x13, 0x7fff7fff; \
-    li  x16, 0x00000000; \
-    paadd.dh x14, x11, x13; \
+    li  x10, 0x7fff7fff; \
+    li  x11, 0x00000000; \
+    li  x12, 0x7fff7fff; \
+    li  x13, 0x00000000; \
+    paadd.dh x14, x10, x12; \
   )
 
   # Mixed values across register pair
   TEST_CASE_D32( 7, x10, x11, 0x00640064003c003c, \
     li  x10, 0x00500050; \
-    li  x11, 0x00000000; \
-    li  x12, 0x00780078; \
-    li  x13, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x11, 0x00780078; \
+    li  x12, 0x00000000; \
     paadd.dh x10, x10, x12; \
   )
 

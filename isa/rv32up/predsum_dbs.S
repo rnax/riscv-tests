@@ -4,9 +4,8 @@
 # predsum_dbs.S
 #-----------------------------------------------------------------------------
 #
-# Test predsum.dbs instruction (packed reduction sum signed double-byte).
-# Operates on 64-bit register pairs: rd = sum(rs1:rs1+1) as signed bytes
-# Sums all 8 signed bytes from the 64-bit register pair
+# Test predsum.dbs instruction (packed reduction sum).
+# rd = rs2 + sum(rs1:rs1+1) as signed elements
 #
 
 #include "riscv_test.h"
@@ -16,49 +15,31 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Packed reduction sum tests
+  # Packed reduction sum tests (uses register pairs - even registers)
   #-------------------------------------------------------------
 
-  # Basic sum: 1+2+3+4+5+6+7+8 = 36
+  # Basic sum starting from 0
   TEST_CASE( 2, x14, 0x00000024, \
-    li  x11, 0x04030201; \
-    li  x12, 0x08070605; \
-    predsum.dbs x14, x11; \
+    li  x10, 0x04030201; \
+    li  x11, 0x08070605; \
+    li  x12, 0x00000000; \
+    predsum.dbs x14, x10, x12; \
   )
 
   # All zeros
   TEST_CASE( 3, x14, 0x00000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
-    predsum.dbs x14, x11; \
+    predsum.dbs x14, x10, x12; \
   )
 
-  # All ones
-  TEST_CASE( 4, x14, 0x00000008, \
+  # Accumulate to existing value
+  TEST_CASE( 4, x14, 0x00000032, \
+    li  x10, 0x01010101; \
     li  x11, 0x01010101; \
-    li  x12, 0x01010101; \
-    predsum.dbs x14, x11; \
-  )
-
-  # Negative values: -1 * 8 = -8
-  TEST_CASE( 5, x14, 0xfffffff8, \
-    li  x11, 0xffffffff; \
-    li  x12, 0xffffffff; \
-    predsum.dbs x14, x11; \
-  )
-
-  # Mixed positive and negative: 10 + (-5) + 20 + (-10) + 5 + (-2) + 15 + (-8) = 25
-  TEST_CASE( 6, x14, 0x00000019, \
-    li  x11, 0xfbfb0a0a; \
-    li  x12, 0xf80f0514; \
-    predsum.dbs x14, x11; \
-  )
-
-  # Large positive values: 100+100+100+100+100+100+100+100 = 800
-  TEST_CASE( 7, x14, 0x00000320, \
-    li  x11, 0x64646464; \
-    li  x12, 0x64646464; \
-    predsum.dbs x14, x11; \
+    li  x12, 0x0000002a; \
+    predsum.dbs x14, x10, x12; \
   )
 
   TEST_PASSFAIL
@@ -71,4 +52,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

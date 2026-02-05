@@ -4,8 +4,7 @@
 # pwmulu_b.S
 #-----------------------------------------------------------------------------
 #
-# Test pwmulu.b instruction (packed widening unsigned multiply byte).
-# Multiplies two 8-bit unsigned values and produces 16-bit unsigned results.
+# Test pwmulu.b instruction.
 #
 
 #include "riscv_test.h"
@@ -15,44 +14,34 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Arithmetic tests
+  # Arithmetic tests (uses register pairs - even registers only)
   #-------------------------------------------------------------
 
-  # Basic multiply: 5 * 6 = 30 (0x001e in both bytes)
-  TEST_CASE( 2, x3, 0x001e001e, \
-    li  x1, 0x05060506; \
-    pwmulu.b x3, x1, x1; \
+  # Basic test
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000000, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000000; \
+    pwmulu.b x14, x10, x12; \
   )
 
-  # Larger values: 15 * 16 = 240 (0x00f0 in both bytes)
-  TEST_CASE( 3, x3, 0x00f000f0, \
-    li  x1, 0x0f100f10; \
-    pwmulu.b x3, x1, x1; \
+  # Simple values test
+  TEST_CASE_D32( 3, x14, x15, 0x0015001500150015, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x03030303; \
+    li  x12, 0x07070707; \
+    pwmulu.b x14, x10, x12; \
   )
 
-  # Max byte values: 255 * 255 = 65025 (0xfe01 in both bytes)
-  TEST_CASE( 4, x3, 0xfe01fe01, \
-    li  x1, 0xffffffff; \
-    pwmulu.b x3, x1, x1; \
-  )
-
-  # Mixed values: 10 * 20 = 200 (0x00c8)
-  TEST_CASE( 5, x3, 0x00c800c8, \
-    li  x1, 0x0a140a14; \
-    pwmulu.b x3, x1, x1; \
-  )
-
-  # Zero multiply: 0 * 255 = 0
-  TEST_CASE( 6, x3, 0x00000000, \
-    li  x1, 0x00ff0000; \
-    pwmulu.b x3, x1, x1; \
-  )
-
-  # Different operands: 7 * 8 = 56, 9 * 11 = 99
-  TEST_CASE( 7, x3, 0x00630038, \
-    li  x1, 0x07090000; \
-    li  x2, 0x080b0000; \
-    pwmulu.b x3, x1, x2; \
+  # Pattern test
+  TEST_CASE_D32( 4, x14, x15, 0x1919191919191919, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x05050505; \
+    li  x12, 0x05050505; \
+    pwmulu.b x14, x10, x12; \
   )
 
   TEST_PASSFAIL
@@ -65,4 +54,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

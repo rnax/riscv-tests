@@ -21,56 +21,56 @@ RVTEST_CODE_BEGIN
 
   # Basic add: 10 + 20 = 30 for each byte
   TEST_CASE_D32( 2, x14, x15, 0x1e1e1e1e1e1e1e1e, \
+    li  x10, 0x0a0a0a0a; \
     li  x11, 0x0a0a0a0a; \
-    li  x12, 0x0a0a0a0a; \
+    li  x12, 0x14141414; \
     li  x13, 0x14141414; \
-    li  x16, 0x14141414; \
-    psaddu.db x14, x11, x13; \
+    psaddu.db x14, x10, x12; \
   )
 
   # Saturation at max unsigned: 200 + 100 = 300 (saturates to 255)
   TEST_CASE_D32( 3, x14, x15, 0xffffffffffffffff, \
+    li  x10, 0xc8c8c8c8; \
     li  x11, 0xc8c8c8c8; \
-    li  x12, 0xc8c8c8c8; \
+    li  x12, 0x64646464; \
     li  x13, 0x64646464; \
-    li  x16, 0x64646464; \
-    psaddu.db x14, x11, x13; \
+    psaddu.db x14, x10, x12; \
   )
 
   # No saturation: 100 + 100 = 200
   TEST_CASE_D32( 4, x14, x15, 0xc8c8c8c8c8c8c8c8, \
+    li  x10, 0x64646464; \
     li  x11, 0x64646464; \
     li  x12, 0x64646464; \
     li  x13, 0x64646464; \
-    li  x16, 0x64646464; \
-    psaddu.db x14, x11, x13; \
+    psaddu.db x14, x10, x12; \
   )
 
   # Zero cases
   TEST_CASE_D32( 5, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    psaddu.db x14, x11, x13; \
+    psaddu.db x14, x10, x12; \
   )
 
   # Mixed values: 50 + 30 = 80
   TEST_CASE_D32( 6, x14, x15, 0x5050505050505050, \
+    li  x10, 0x32323232; \
     li  x11, 0x32323232; \
-    li  x12, 0x32323232; \
+    li  x12, 0x1e1e1e1e; \
     li  x13, 0x1e1e1e1e; \
-    li  x16, 0x1e1e1e1e; \
-    psaddu.db x14, x11, x13; \
+    psaddu.db x14, x10, x12; \
   )
 
   # Large values: 255 + 1 = 256 (saturates to 255)
   TEST_CASE_D32( 7, x14, x15, 0xffffffffffffffff, \
+    li  x10, 0xffffffff; \
     li  x11, 0xffffffff; \
-    li  x12, 0xffffffff; \
+    li  x12, 0x01010101; \
     li  x13, 0x01010101; \
-    li  x16, 0x01010101; \
-    psaddu.db x14, x11, x13; \
+    psaddu.db x14, x10, x12; \
   )
 
   TEST_PASSFAIL

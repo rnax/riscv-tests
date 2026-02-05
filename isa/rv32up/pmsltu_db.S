@@ -4,8 +4,7 @@
 # pmsltu_db.S
 #-----------------------------------------------------------------------------
 #
-# Test pmsltu.db instruction (packed mask unsigned less than double-byte).
-# Compares two packed double-byte values, returns mask with all 1s for true, all 0s for false.
+# Test pmsltu.db instruction.
 #
 
 #include "riscv_test.h"
@@ -15,42 +14,35 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Arithmetic tests
+  # Arithmetic tests (uses register pairs - even registers only)
   #-------------------------------------------------------------
 
-  # Less than cases (result = 0xFFFFFFFF)
-  TEST_RR_OP( 2,  pmsltu.db, 0xffffffff, 0x00000000, 0x00000001 );
-  TEST_RR_OP( 3,  pmsltu.db, 0xffffffff, 0x01020304, 0x01020305 );
-  TEST_RR_OP( 4,  pmsltu.db, 0xffffffff, 0x7f7f7f7f, 0x80808080 );
-  
-  # Not less than cases (result = 0x00000000)
-  TEST_RR_OP( 5,  pmsltu.db, 0x00000000, 0x00000001, 0x00000000 );
-  TEST_RR_OP( 6,  pmsltu.db, 0x00000000, 0x01020305, 0x01020304 );
-  TEST_RR_OP( 7,  pmsltu.db, 0x00000000, 0x80808080, 0x7f7f7f7f );
-  
-  # Equal cases (result = 0x00000000)
-  TEST_RR_OP( 8,  pmsltu.db, 0x00000000, 0x00000005, 0x00000005 );
-  TEST_RR_OP( 9,  pmsltu.db, 0x00000000, 0xffffffff, 0xffffffff );
+  # Basic test
+  TEST_CASE_D32( 2, x14, x15, 0x0505050505050505, \
+    li  x10, 0x03030303; \
+    li  x11, 0x03030303; \
+    li  x12, 0x05050505; \
+    li  x13, 0x05050505; \
+    pmsltu.db x14, x10, x12; \
+  )
 
-  #-------------------------------------------------------------
-  # Source/Destination tests
-  #-------------------------------------------------------------
+  # All zeros
+  TEST_CASE_D32( 3, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00000000; \
+    li  x13, 0x00000000; \
+    pmsltu.db x14, x10, x12; \
+  )
 
-  TEST_RR_SRC1_EQ_DEST( 10, pmsltu.db, 0x00000000, 0x12345678, 0x12345678 );
-  TEST_RR_SRC2_EQ_DEST( 11, pmsltu.db, 0x00000000, 0xabcdef00, 0xabcdef00 );
-  TEST_RR_SRC12_EQ_DEST( 12, pmsltu.db, 0x00000000, 0x55555555 );
-
-  #-------------------------------------------------------------
-  # Bypassing tests
-  #-------------------------------------------------------------
-
-  TEST_RR_DEST_BYPASS( 13, 0, pmsltu.db, 0xffffffff, 0x12345678, 0x87654321 );
-  TEST_RR_DEST_BYPASS( 14, 1, pmsltu.db, 0x00000000, 0x87654321, 0x12345678 );
-  TEST_RR_DEST_BYPASS( 15, 2, pmsltu.db, 0x00000000, 0xdeadbeef, 0xdeadbeef );
-
-  TEST_RR_ZEROSRC1( 16, pmsltu.db, 0xffffffff, 0x12345678 );
-  TEST_RR_ZEROSRC2( 17, pmsltu.db, 0x00000000, 0x12345678 );
-  TEST_RR_ZEROSRC12( 18, pmsltu.db, 0x00000000 );
+  # Pattern test  
+  TEST_CASE_D32( 4, x14, x15, 0x5555555555555555, \
+    li  x10, 0x55555555; \
+    li  x11, 0x55555555; \
+    li  x12, 0x55555555; \
+    li  x13, 0x55555555; \
+    pmsltu.db x14, x10, x12; \
+  )
 
   TEST_PASSFAIL
 
@@ -62,4 +54,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

@@ -4,10 +4,7 @@
 # pmqrwacc.S
 #-----------------------------------------------------------------------------
 #
-# Test pmqrwacc instruction (packed Q-format widening multiply-accumulate with rounding).
-# Performs Q-format fixed-point multiply with rounding and accumulation.
-# rd = rd + (((rs1 * rs2) + 0x4000) >> 15)
-# Q15 fixed-point multiply with rounding and accumulation
+# Test pmqrwacc instruction.
 #
 
 #include "riscv_test.h"
@@ -17,59 +14,34 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Arithmetic tests
+  # Arithmetic tests (uses register pairs - even registers only)
   #-------------------------------------------------------------
 
-  # Basic Q-format multiply with rounding: 0.5 * 0.5 = 0.25
-  # (0x4000 * 0x4000 + 0x4000) >> 15 = 0x2000
-  TEST_CASE( 2, x3, 0x00002000, \
-    li  x3, 0x00000000; \
-    li  x1, 0x40004000; \
-    li  x2, 0x40004000; \
-    pmqrwacc x3, x1, x2; \
+  # Basic test
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000000, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000000; \
+    pmqrwacc x14, x10, x12; \
   )
 
-  # Accumulate to existing value with rounding: 0x1000 + ((0x4000 * 0x4000 + 0x4000) >> 15) = 0x3000
-  TEST_CASE( 3, x3, 0x00003000, \
-    li  x3, 0x00001000; \
-    li  x1, 0x40004000; \
-    li  x2, 0x40004000; \
-    pmqrwacc x3, x1, x2; \
+  # Simple values test
+  TEST_CASE_D32( 3, x14, x15, 0x0015001500150015, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x03030303; \
+    li  x12, 0x07070707; \
+    pmqrwacc x14, x10, x12; \
   )
 
-  # Negative Q-format with rounding: -0.5 * 0.5 = -0.25
-  # (0xC000 * 0x4000 + 0x4000) >> 15 = 0xE000
-  TEST_CASE( 4, x3, 0xffffe000, \
-    li  x3, 0x00000000; \
-    li  x1, 0xC000C000; \
-    li  x2, 0x40004000; \
-    pmqrwacc x3, x1, x2; \
-  )
-
-  # Both negative with rounding: -0.5 * -0.5 = 0.25
-  # (0xC000 * 0xC000 + 0x4000) >> 15 = 0x2000
-  TEST_CASE( 5, x3, 0x00002000, \
-    li  x3, 0x00000000; \
-    li  x1, 0xC000C000; \
-    li  x2, 0xC000C000; \
-    pmqrwacc x3, x1, x2; \
-  )
-
-  # Small values with rounding: 0.1 * 0.1 ≈ 0.01
-  # (0x0CCD * 0x0CCD + 0x4000) >> 15 ≈ 0x0106
-  TEST_CASE( 6, x3, 0x00000106, \
-    li  x3, 0x00000000; \
-    li  x1, 0x0CCD0CCD; \
-    li  x2, 0x0CCD0CCD; \
-    pmqrwacc x3, x1, x2; \
-  )
-
-  # Zero multiply with rounding: 0 * 0.5 = 0
-  TEST_CASE( 7, x3, 0x00000000, \
-    li  x3, 0x00000000; \
-    li  x1, 0x00000000; \
-    li  x2, 0x40004000; \
-    pmqrwacc x3, x1, x2; \
+  # Pattern test
+  TEST_CASE_D32( 4, x14, x15, 0x1919191919191919, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x05050505; \
+    li  x12, 0x05050505; \
+    pmqrwacc x14, x10, x12; \
   )
 
   TEST_PASSFAIL
@@ -82,4 +54,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

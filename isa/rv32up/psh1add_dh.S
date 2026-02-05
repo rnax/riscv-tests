@@ -21,56 +21,56 @@ RVTEST_CODE_BEGIN
 
   # Basic: ((2 << 1) + 3) = 7 for each halfword
   TEST_CASE_D32( 2, x14, x15, 0x00070007, \
-    li  x11, 0x00020002; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00030003; \
-    li  x16, 0x00000000; \
-    psh1add.dh x14, x11, x13; \
+    li  x10, 0x00020002; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00030003; \
+    li  x13, 0x00000000; \
+    psh1add.dh x14, x10, x12; \
   )
 
   # ((5 << 1) + 10) = 20 for each halfword
   TEST_CASE_D32( 3, x14, x15, 0x0014, \
-    li  x11, 0x00050005; \
-    li  x12, 0x00000000; \
-    li  x13, 0x000a000a; \
-    li  x16, 0x00000000; \
-    psh1add.dh x14, x11, x13; \
+    li  x10, 0x00050005; \
+    li  x11, 0x00000000; \
+    li  x12, 0x000a000a; \
+    li  x13, 0x00000000; \
+    psh1add.dh x14, x10, x12; \
   )
 
   # Wrapping: ((40000 << 1) + 30000) wraps in 16-bit
   TEST_CASE_D32( 4, x14, x15, 0x3c703c70, \
-    li  x11, 0x9c409c40; \
-    li  x12, 0x00000000; \
-    li  x13, 0x75307530; \
-    li  x16, 0x00000000; \
-    psh1add.dh x14, x11, x13; \
+    li  x10, 0x9c409c40; \
+    li  x11, 0x00000000; \
+    li  x12, 0x75307530; \
+    li  x13, 0x00000000; \
+    psh1add.dh x14, x10, x12; \
   )
 
   # Zero cases
   TEST_CASE_D32( 5, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    psh1add.dh x14, x11, x13; \
+    psh1add.dh x14, x10, x12; \
   )
 
   # ((100 << 1) + 50) = 250 for each halfword
   TEST_CASE_D32( 6, x14, x15, 0x00fa00fa, \
-    li  x11, 0x00640064; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00320032; \
-    li  x16, 0x00000000; \
-    psh1add.dh x14, x11, x13; \
+    li  x10, 0x00640064; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00320032; \
+    li  x13, 0x00000000; \
+    psh1add.dh x14, x10, x12; \
   )
 
   # Negative operands: ((-2 << 1) + (-3)) = -7
   TEST_CASE_D32( 7, x14, x15, 0xfff9fff9, \
-    li  x11, 0xfffefffe; \
-    li  x12, 0x00000000; \
-    li  x13, 0xfffdffd; \
-    li  x16, 0x00000000; \
-    psh1add.dh x14, x11, x13; \
+    li  x10, 0xfffefffe; \
+    li  x11, 0x00000000; \
+    li  x12, 0xfffdffd; \
+    li  x13, 0x00000000; \
+    psh1add.dh x14, x10, x12; \
   )
 
   TEST_PASSFAIL

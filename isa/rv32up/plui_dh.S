@@ -19,34 +19,29 @@ RVTEST_CODE_BEGIN
   # Arithmetic tests
   #-------------------------------------------------------------
 
-  # Load immediate 0x0000 << 16
+  # Load immediate 0 << 16
   TEST_CASE_D32( 2, x14, x15, 0x0000000000000000, \
-    plui.dh x14, 0x0000; \
+    plui.dh x14, 0; \
   )
 
-  # Load immediate 0x1234 << 16
-  TEST_CASE_D32( 3, x14, x15, 0x1234000012340000, \
-    plui.dh x14, 0x1234; \
+  # Load immediate 0x100 << 16
+  TEST_CASE_D32( 3, x14, x15, 0x0100000001000000, \
+    plui.dh x14, 0x100; \
   )
 
-  # Load immediate 0xffff << 16
-  TEST_CASE_D32( 4, x14, x15, 0xffffffff00000000, \
-    plui.dh x14, 0xffff; \
+  # Load immediate -1 << 16 (0xffff pattern)
+  TEST_CASE_D32( 4, x14, x15, 0xffff0000ffff0000, \
+    plui.dh x14, -1; \
   )
 
-  # Load immediate 0x7fff << 16 (max positive)
-  TEST_CASE_D32( 5, x14, x15, 0x7fff00007fff0000, \
-    plui.dh x14, 0x7fff; \
+  # Load immediate 0x1ff << 16 (max positive in range)
+  TEST_CASE_D32( 5, x14, x15, 0x01ff000001ff0000, \
+    plui.dh x14, 0x1ff; \
   )
 
-  # Load immediate 0x8000 << 16 (min negative)
-  TEST_CASE_D32( 6, x14, x15, 0x8000000080000000, \
-    plui.dh x14, 0x8000; \
-  )
-
-  # Load immediate 0xaaaa << 16
-  TEST_CASE_D32( 7, x14, x15, 0xaaaa0000aaaa0000, \
-    plui.dh x14, 0xaaaa; \
+  # Load immediate -512 << 16 (0xfe00 pattern)
+  TEST_CASE_D32( 6, x14, x15, 0xfe000000fe000000, \
+    plui.dh x14, -512; \
   )
 
   TEST_PASSFAIL

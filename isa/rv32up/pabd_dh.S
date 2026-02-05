@@ -21,47 +21,47 @@ RVTEST_CODE_BEGIN
 
   # Basic difference: |1000 - 500| = 500
   TEST_CASE_D32( 2, x14, x15, 0x01f401f401f401f4, \
-    li  x11, 0x03e803e8; \
-    li  x12, 0x00000000; \
-    li  x13, 0x01f401f4; \
-    li  x16, 0x00000000; \
-    pabd.dh x14, x11, x13; \
+    li  x10, 0x03e803e8; \
+    li  x11, 0x00000000; \
+    li  x12, 0x01f401f4; \
+    li  x13, 0x00000000; \
+    pabd.dh x14, x10, x12; \
   )
 
   # Negative difference: |500 - 1000| = 500
   TEST_CASE_D32( 3, x14, x15, 0x01f401f401f401f4, \
-    li  x11, 0x01f401f4; \
-    li  x12, 0x00000000; \
-    li  x13, 0x03e803e8; \
-    li  x16, 0x00000000; \
-    pabd.dh x14, x11, x13; \
+    li  x10, 0x01f401f4; \
+    li  x11, 0x00000000; \
+    li  x12, 0x03e803e8; \
+    li  x13, 0x00000000; \
+    pabd.dh x14, x10, x12; \
   )
 
   # Zero difference: |100 - 100| = 0
   TEST_CASE_D32( 4, x14, x15, 0x0000000000000000, \
-    li  x11, 0x00640064; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00640064; \
-    li  x16, 0x00000000; \
-    pabd.dh x14, x11, x13; \
+    li  x10, 0x00640064; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00640064; \
+    li  x13, 0x00000000; \
+    pabd.dh x14, x10, x12; \
   )
 
   # Max values: |32767 - 1| = 32766
   TEST_CASE_D32( 5, x14, x15, 0x7ffe7ffe7ffe7ffe, \
-    li  x11, 0x7fff7fff; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00010001; \
-    li  x16, 0x00000000; \
-    pabd.dh x14, x11, x13; \
+    li  x10, 0x7fff7fff; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00010001; \
+    li  x13, 0x00000000; \
+    pabd.dh x14, x10, x12; \
   )
 
   # Negative values: |-100 - (-50)| = 50
   TEST_CASE_D32( 6, x14, x15, 0x00320032, \
-    li  x11, 0xff9cff9c; \
-    li  x12, 0xffffffff; \
-    li  x13, 0xffceffce; \
-    li  x16, 0xffffffff; \
-    pabd.dh x14, x11, x13; \
+    li  x10, 0xff9cff9c; \
+    li  x11, 0xffffffff; \
+    li  x12, 0xffceffce; \
+    li  x13, 0xffffffff; \
+    pabd.dh x14, x10, x12; \
   )
 
   TEST_PASSFAIL

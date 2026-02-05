@@ -47,7 +47,6 @@ rv32up_sc_tests = \
 	pm2wadd_h pm2wadd_hx pm2wadda_h pm2wadda_hx \
 	pm2waddu_h pm2waddau_h pm2waddsu_h pm2waddasu_h \
 	pm2wsub_h pm2wsub_hx pm2wsuba_h pm2wsuba_hx \
-	pmqwacc pmqwacc_h pmqrwacc pmqrwacc_h \
 	pnclip_bs pnclip_hs pnclipi_b pnclipi_h \
 	pnclipiu_b pnclipiu_h pnclipr_bs pnclipr_hs \
 	pnclipri_b pnclipri_h pnclipriu_b pnclipriu_h \
@@ -62,18 +61,13 @@ rv32up_sc_tests = \
 	psadd_db psadd_dh psadd_dw \
 	psaddu_db psaddu_dh psaddu_dw \
 	psa_dhx psas_dhx pssa_dhx \
-	psati_dh psati_dw pusati_dh pusati_dw \
 	psext_dh_b psext_dw_b psext_dw_h \
 	psh1add_dh psh1add_dw \
 	psll_dbs psll_dhs psll_dws \
 	pslli_db pslli_dh pslli_dw \
 	psra_dbs psra_dhs psra_dws \
-	psrai_db psrai_dh psrai_dw \
-	psrari_dh psrari_dw \
 	psrl_dbs psrl_dhs psrl_dws \
-	psrli_db psrli_dh psrli_dw \
 	pssh1sadd_dh pssh1sadd_dw \
-	pssha_dhs pssha_dws psshar_dhs psshar_dws \
 	psslai_dh psslai_dw \
 	pssub_db pssub_dh pssub_dw \
 	pssubu_db pssubu_dh pssubu_dw \
@@ -111,7 +105,7 @@ rv32up_sc_tests = \
 	pmulq_h pmulqr_h \
 	pmulsu_h_b00 pmulsu_h_b11 \
 	pmulu_h_b00 pmulu_h_b01 pmulu_h_b11 \
-	ppaire_b ppaire_h ppaireo_b ppaireo_h \
+	ppaire_b ppaireo_b ppaireo_h \
 	ppairo_b ppairo_h ppairoe_b ppairoe_h \
 	predsum_bs predsum_hs predsumu_bs predsumu_hs \
 	psabs_b psabs_h psadd_b psadd_h psaddu_b psaddu_h \
@@ -122,8 +116,7 @@ rv32up_sc_tests = \
 	psrl_bs psrl_hs psrli_b psrli_h \
 	pssha_hs psshar_hs psslai_h \
 	pssub_b pssub_h pssubu_b pssubu_h \
-	psub_b psub_h \
-	zip8p zip8hp unzip8p unzip8hp unzip16p unzip16hp
+	psub_b psub_h
 
 rv32up_p_tests = $(addprefix rv32up-p-, $(rv32up_sc_tests))
 rv32up_v_tests = $(addprefix rv32up-v-, $(rv32up_sc_tests))

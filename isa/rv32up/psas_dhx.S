@@ -21,47 +21,47 @@ RVTEST_CODE_BEGIN
 
   # Basic cross: (0x0005 + 0x0003, 0x0003 - 0x0005) = (0x0008, 0xfffe)
   TEST_CASE_D32( 2, x14, x15, 0xfffeffffe, \
-    li  x11, 0x00050003; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00050003; \
-    li  x16, 0x00000000; \
-    psas.dhx x14, x11, x13; \
+    li  x10, 0x00050003; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00050003; \
+    li  x13, 0x00000000; \
+    psas.dhx x14, x10, x12; \
   )
 
   # Zero case: (0x0000 + 0x0000, 0x0000 - 0x0000) = (0x0000, 0x0000)
   TEST_CASE_D32( 3, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    psas.dhx x14, x11, x13; \
+    psas.dhx x14, x10, x12; \
   )
 
   # Saturation on add: (0x7fff + 0x7fff, 0x0001 - 0x0001) = (0x7fff, 0x0000) [saturated]
   TEST_CASE_D32( 4, x14, x15, 0x00007fff, \
-    li  x11, 0x7fff0001; \
-    li  x12, 0x00000000; \
-    li  x13, 0x7fff0001; \
-    li  x16, 0x00000000; \
-    psas.dhx x14, x11, x13; \
+    li  x10, 0x7fff0001; \
+    li  x11, 0x00000000; \
+    li  x12, 0x7fff0001; \
+    li  x13, 0x00000000; \
+    psas.dhx x14, x10, x12; \
   )
 
   # Saturation on sub: (0x0001 + 0x0001, 0x8000 - 0x7fff) = (0x0002, 0x8001) [saturated]
   TEST_CASE_D32( 5, x14, x15, 0x80010002, \
-    li  x11, 0x00018000; \
-    li  x12, 0x00000000; \
-    li  x13, 0x7fff0001; \
-    li  x16, 0x00000000; \
-    psas.dhx x14, x11, x13; \
+    li  x10, 0x00018000; \
+    li  x11, 0x00000000; \
+    li  x12, 0x7fff0001; \
+    li  x13, 0x00000000; \
+    psas.dhx x14, x10, x12; \
   )
 
   # Negative values: (0xff00 + 0xff00, 0xff00 - 0xff00) = (0xfe00, 0x0000)
   TEST_CASE_D32( 6, x14, x15, 0x0000fe00, \
-    li  x11, 0xff00ff00; \
-    li  x12, 0xffffffff; \
-    li  x13, 0xff00ff00; \
-    li  x16, 0xffffffff; \
-    psas.dhx x14, x11, x13; \
+    li  x10, 0xff00ff00; \
+    li  x11, 0xffffffff; \
+    li  x12, 0xff00ff00; \
+    li  x13, 0xffffffff; \
+    psas.dhx x14, x10, x12; \
   )
 
   TEST_PASSFAIL

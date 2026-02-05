@@ -21,50 +21,50 @@ RVTEST_CODE_BEGIN
 
   # No shift: 0x0000000800000008 >> 0 = 0x0000000800000008
   TEST_CASE_D32( 2, x14, x15, 0x0000000800000008, \
-    li  x11, 0x00000008; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000008; \
+    li  x11, 0x00000000; \
     li  x13, 0; \
-    psrl.dws x14, x11, x13; \
+    psrl.dws x14, x10, x12; \
   )
 
   # Shift by 1: 0x0000000800000008 >> 1 = 0x0000000400000004
   TEST_CASE_D32( 3, x14, x15, 0x0000000400000004, \
-    li  x11, 0x00000008; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000008; \
+    li  x11, 0x00000000; \
     li  x13, 1; \
-    psrl.dws x14, x11, x13; \
+    psrl.dws x14, x10, x12; \
   )
 
   # Shift by 8: 0x0000010000000100 >> 8 = 0x0000000100000001
   TEST_CASE_D32( 4, x14, x15, 0x0000000100000001, \
-    li  x11, 0x00000100; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000100; \
+    li  x11, 0x00000000; \
     li  x13, 8; \
-    psrl.dws x14, x11, x13; \
+    psrl.dws x14, x10, x12; \
   )
 
   # Logical shift (no sign extension): 0xf0000000f0000000 >> 1 = 0x78000000780000000
   TEST_CASE_D32( 5, x14, x15, 0x7800000078000000, \
-    li  x11, 0xf0000000; \
-    li  x12, 0xffffffff; \
+    li  x10, 0xf0000000; \
+    li  x11, 0xffffffff; \
     li  x13, 1; \
-    psrl.dws x14, x11, x13; \
+    psrl.dws x14, x10, x12; \
   )
 
   # Logical shift by 16: 0x80000000800000000 >> 16 = 0x0000800000008000
   TEST_CASE_D32( 6, x14, x15, 0x0000800000008000, \
-    li  x11, 0x80000000; \
-    li  x12, 0xffffffff; \
+    li  x10, 0x80000000; \
+    li  x11, 0xffffffff; \
     li  x13, 16; \
-    psrl.dws x14, x11, x13; \
+    psrl.dws x14, x10, x12; \
   )
 
   # Shift by 31: 0xffffffffffffffff >> 31 = 0x0000000100000001
   TEST_CASE_D32( 7, x14, x15, 0x0000000100000001, \
+    li  x10, 0xffffffff; \
     li  x11, 0xffffffff; \
-    li  x12, 0xffffffff; \
     li  x13, 31; \
-    psrl.dws x14, x11, x13; \
+    psrl.dws x14, x10, x12; \
   )
 
   TEST_PASSFAIL

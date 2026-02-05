@@ -21,50 +21,50 @@ RVTEST_CODE_BEGIN
 
   # No shift: 0x0000000100000001 << 0 = 0x0000000100000001
   TEST_CASE_D32( 2, x14, x15, 0x0000000100000001, \
-    li  x11, 0x00000001; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000001; \
+    li  x11, 0x00000000; \
     li  x13, 0; \
-    psll.dws x14, x11, x13; \
+    psll.dws x14, x10, x12; \
   )
 
   # Shift by 1: 0x0000000100000001 << 1 = 0x0000000200000002
   TEST_CASE_D32( 3, x14, x15, 0x0000000200000002, \
-    li  x11, 0x00000001; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000001; \
+    li  x11, 0x00000000; \
     li  x13, 1; \
-    psll.dws x14, x11, x13; \
+    psll.dws x14, x10, x12; \
   )
 
   # Shift by 8: 0x00000fff00000fff << 8 = 0x0fff000000fff0000
   TEST_CASE_D32( 4, x14, x15, 0x0fff000000fff0000, \
-    li  x11, 0x00000fff; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000fff; \
+    li  x11, 0x00000000; \
     li  x13, 8; \
-    psll.dws x14, x11, x13; \
+    psll.dws x14, x10, x12; \
   )
 
   # Shift by 16: 0x0000ffff0000ffff << 16 = 0xffff000000000000
   TEST_CASE_D32( 5, x14, x15, 0xffff000000000000, \
-    li  x11, 0x0000ffff; \
-    li  x12, 0x00000000; \
+    li  x10, 0x0000ffff; \
+    li  x11, 0x00000000; \
     li  x13, 16; \
-    psll.dws x14, x11, x13; \
+    psll.dws x14, x10, x12; \
   )
 
   # Shift by 31: 0x0000000100000001 << 31 = 0x8000000080000000
   TEST_CASE_D32( 6, x14, x15, 0x8000000080000000, \
-    li  x11, 0x00000001; \
-    li  x12, 0x00000000; \
+    li  x10, 0x00000001; \
+    li  x11, 0x00000000; \
     li  x13, 31; \
-    psll.dws x14, x11, x13; \
+    psll.dws x14, x10, x12; \
   )
 
   # Shift with overflow: 0xffffffffffffffff << 1 = 0xfffffffffffffffe
   TEST_CASE_D32( 7, x14, x15, 0xfffffffffffffffe, \
+    li  x10, 0xffffffff; \
     li  x11, 0xffffffff; \
-    li  x12, 0xffffffff; \
     li  x13, 1; \
-    psll.dws x14, x11, x13; \
+    psll.dws x14, x10, x12; \
   )
 
   TEST_PASSFAIL

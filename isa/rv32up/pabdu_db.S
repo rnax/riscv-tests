@@ -21,47 +21,47 @@ RVTEST_CODE_BEGIN
 
   # Basic difference: |200 - 100| = 100
   TEST_CASE_D32( 2, x14, x15, 0x6464646464646464, \
-    li  x11, 0xc8c8c8c8; \
-    li  x12, 0x00000000; \
-    li  x13, 0x64646464; \
-    li  x16, 0x00000000; \
-    pabdu.db x14, x11, x13; \
+    li  x10, 0xc8c8c8c8; \
+    li  x11, 0x00000000; \
+    li  x12, 0x64646464; \
+    li  x13, 0x00000000; \
+    pabdu.db x14, x10, x12; \
   )
 
   # Reverse difference: |100 - 200| = 100
   TEST_CASE_D32( 3, x14, x15, 0x6464646464646464, \
-    li  x11, 0x64646464; \
-    li  x12, 0x00000000; \
-    li  x13, 0xc8c8c8c8; \
-    li  x16, 0x00000000; \
-    pabdu.db x14, x11, x13; \
+    li  x10, 0x64646464; \
+    li  x11, 0x00000000; \
+    li  x12, 0xc8c8c8c8; \
+    li  x13, 0x00000000; \
+    pabdu.db x14, x10, x12; \
   )
 
   # Zero difference: |150 - 150| = 0
   TEST_CASE_D32( 4, x14, x15, 0x0000000000000000, \
-    li  x11, 0x96969696; \
-    li  x12, 0x00000000; \
-    li  x13, 0x96969696; \
-    li  x16, 0x00000000; \
-    pabdu.db x14, x11, x13; \
+    li  x10, 0x96969696; \
+    li  x11, 0x00000000; \
+    li  x12, 0x96969696; \
+    li  x13, 0x00000000; \
+    pabdu.db x14, x10, x12; \
   )
 
   # Max values: |255 - 0| = 255
   TEST_CASE_D32( 5, x14, x15, 0xffffffffffffffff, \
-    li  x11, 0xffffffff; \
+    li  x10, 0xffffffff; \
+    li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    pabdu.db x14, x11, x13; \
+    pabdu.db x14, x10, x12; \
   )
 
   # Large difference: |255 - 1| = 254
   TEST_CASE_D32( 6, x14, x15, 0xfefefefefefefefe, \
-    li  x11, 0xffffffff; \
-    li  x12, 0x00000000; \
-    li  x13, 0x01010101; \
-    li  x16, 0x00000000; \
-    pabdu.db x14, x11, x13; \
+    li  x10, 0xffffffff; \
+    li  x11, 0x00000000; \
+    li  x12, 0x01010101; \
+    li  x13, 0x00000000; \
+    pabdu.db x14, x10, x12; \
   )
 
   TEST_PASSFAIL

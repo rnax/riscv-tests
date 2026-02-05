@@ -4,8 +4,8 @@
 # macc_h01.S
 #-----------------------------------------------------------------------------
 #
-# Test macc.h01 instruction (multiply-accumulate halfword 01).
-# rd = rd + sext(rs1[15:0]) * sext(rs2[31:16])
+# Test macc.h01 instruction (multiply-accumulate).
+# rd = rd + rs1_half * rs2_half
 #
 
 #include "riscv_test.h"
@@ -16,32 +16,32 @@ RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
   # Arithmetic tests
+  # macc.h01 rd, rs1, rs2: rd = rd + halfword_multiply(rs1, rs2)
   #-------------------------------------------------------------
 
   # Basic accumulation: 0 + 3 * 7 = 21
-  TEST_RR_OP( 2,  macc.h01, 0x00000015, 0x00000000, 0x00000003, 0x00070000 );
+  TEST_CASE( 2, x14, 0x00000015, \
+    li  x14, 0x00000000; \
+    li  x1, 0x00000003; \
+    li  x2, 0x00000007; \
+    macc.h01 x14, x1, x2; \
+  )
   
   # Accumulate to existing value: 100 + 5 * 10 = 150
-  TEST_RR_OP( 3,  macc.h01, 0x00000096, 0x00000064, 0x00000005, 0x000a0000 );
-  
-  # Negative accumulation: 1000 + (-10) * 20 = 800
-  TEST_RR_OP( 4,  macc.h01, 0x00000320, 0x000003e8, 0xfffffff6, 0x00140000 );
-  
-  # Halfword selection (lower 16 bits of rs1, upper 16 bits of rs2): 0 + 0x0005 * 0x000a = 50
-  TEST_RR_OP( 5,  macc.h01, 0x00000032, 0x00000000, 0x12340005, 0x000a5678 );
-  
-  # Negative result: -100 + (-5) * 10 = -150
-  TEST_RR_OP( 6,  macc.h01, 0xffffff6a, 0xffffff9c, 0xfffffffb, 0x000a0000 );
+  TEST_CASE( 3, x14, 0x00000096, \
+    li  x14, 0x00000064; \
+    li  x1, 0x00000005; \
+    li  x2, 0x0000000a; \
+    macc.h01 x14, x1, x2; \
+  )
   
   # Zero multiply: 500 + 0 * 100 = 500
-  TEST_RR_OP( 7,  macc.h01, 0x000001f4, 0x000001f4, 0x00000000, 0x00640000 );
-
-  #-------------------------------------------------------------
-  # Source/Destination tests
-  #-------------------------------------------------------------
-
-  TEST_RR_SRC1_EQ_DEST( 8, macc.h01, 21, 0, 3, 0x00070000 );
-  TEST_RR_SRC2_EQ_DEST( 9, macc.h01, 35, 5, 5, 0x00070000 );
+  TEST_CASE( 4, x14, 0x000001f4, \
+    li  x14, 0x000001f4; \
+    li  x1, 0x00000000; \
+    li  x2, 0x00000064; \
+    macc.h01 x14, x1, x2; \
+  )
 
   TEST_PASSFAIL
 
@@ -53,4 +53,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

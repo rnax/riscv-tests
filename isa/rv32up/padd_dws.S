@@ -21,55 +21,55 @@ RVTEST_CODE_BEGIN
 
   # Basic add: 1000 + 2000 = 3000 for each word
   TEST_CASE_D32( 2, x14, x15, 0x00000bb800000bb8, \
-    li  x11, 0x000003e8; \
-    li  x12, 0x00000000; \
-    li  x13, 0x000007d0; \
-    li  x16, 0x00000000; \
-    padd.dws x14, x11, x13; \
+    li  x10, 0x000003e8; \
+    li  x11, 0x00000000; \
+    li  x12, 0x000007d0; \
+    li  x13, 0x00000000; \
+    padd.dws x14, x10, x12; \
   )
 
   # Positive saturation: 0x60000000 + 0x60000000 = 0xc0000000 (saturates to 0x7fffffff)
   TEST_CASE_D32( 3, x14, x15, 0x7fffffff7fffffff, \
-    li  x11, 0x60000000; \
-    li  x12, 0x00000000; \
-    li  x13, 0x60000000; \
-    li  x16, 0x00000000; \
-    padd.dws x14, x11, x13; \
+    li  x10, 0x60000000; \
+    li  x11, 0x00000000; \
+    li  x12, 0x60000000; \
+    li  x13, 0x00000000; \
+    padd.dws x14, x10, x12; \
   )
 
   # Negative saturation: 0x80000000 + 0x80000000 = 0x100000000 (saturates to 0x80000000)
   TEST_CASE_D32( 4, x14, x15, 0x8000000080000000, \
-    li  x11, 0x80000000; \
-    li  x12, 0xffffffff; \
-    li  x13, 0x80000000; \
-    li  x16, 0xffffffff; \
-    padd.dws x14, x11, x13; \
+    li  x10, 0x80000000; \
+    li  x11, 0xffffffff; \
+    li  x12, 0x80000000; \
+    li  x13, 0xffffffff; \
+    padd.dws x14, x10, x12; \
   )
 
   # Zero cases
   TEST_CASE_D32( 5, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    padd.dws x14, x11, x13; \
+    padd.dws x14, x10, x12; \
   )
 
   # No saturation: 1000000 + 500000 = 1500000
   TEST_CASE_D32( 6, x14, x15, 0x0016e3600016e360, \
-    li  x11, 0x000f4240; \
-    li  x12, 0x00000000; \
-    li  x13, 0x0007a120; \
-    li  x16, 0x00000000; \
-    padd.dws x14, x11, x13; \
+    li  x10, 0x000f4240; \
+    li  x11, 0x00000000; \
+    li  x12, 0x0007a120; \
+    li  x13, 0x00000000; \
+    padd.dws x14, x10, x12; \
   )
 
   # Across register pair
   TEST_CASE_D32( 7, x10, x11, 0x00000bb800000bb8, \
     li  x10, 0x000003e8; \
-    li  x11, 0x00000000; \
-    li  x12, 0x000007d0; \
-    li  x13, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x11, 0x000007d0; \
+    li  x12, 0x00000000; \
     padd.dws x10, x10, x12; \
   )
 

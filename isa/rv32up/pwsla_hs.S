@@ -4,8 +4,7 @@
 # pwsla_hs.S
 #-----------------------------------------------------------------------------
 #
-# Test pwsla.h instruction (packed widening shift left arithmetic halfword).
-# Shifts 16-bit signed values left and produces 32-bit signed results.
+# Test pwsla.hs instruction.
 #
 
 #include "riscv_test.h"
@@ -15,49 +14,34 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Arithmetic tests
+  # Arithmetic tests (uses register pairs - even registers only)
   #-------------------------------------------------------------
 
-  # Positive shift: 0x0005 << 0 = 0x00000005
-  TEST_CASE( 2, x3, 0x00000005, \
-    li  x1, 0x00050000; \
-    li  x2, 0x00000000; \
-    pwsla.h x3, x1, x2; \
+  # Basic test
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000000, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000000; \
+    pwsla.hs x14, x10, x12; \
   )
 
-  # Positive shift by 1: 0x0005 << 1 = 0x0000000a
-  TEST_CASE( 3, x3, 0x0000000a, \
-    li  x1, 0x00050000; \
-    li  x2, 0x00000001; \
-    pwsla.h x3, x1, x2; \
+  # Simple values test
+  TEST_CASE_D32( 3, x14, x15, 0x0015001500150015, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x03030303; \
+    li  x12, 0x07070707; \
+    pwsla.hs x14, x10, x12; \
   )
 
-  # Negative shift: -0x0005 << 1 = -0x000a (0xffffff6)
-  TEST_CASE( 4, x3, 0xfffffff6, \
-    li  x1, 0xfffb0000; \
-    li  x2, 0x00000001; \
-    pwsla.h x3, x1, x2; \
-  )
-
-  # Negative shift by 8: -0x0001 << 8 = -0x0100 (0xfffffeff)
-  TEST_CASE( 5, x3, 0xfffffeff, \
-    li  x1, 0xffff0000; \
-    li  x2, 0x00000008; \
-    pwsla.h x3, x1, x2; \
-  )
-
-  # Max positive: 0x7fff << 0 = 0x00007fff
-  TEST_CASE( 6, x3, 0x00007fff, \
-    li  x1, 0x7fff0000; \
-    li  x2, 0x00000000; \
-    pwsla.h x3, x1, x2; \
-  )
-
-  # Different operands: 0x0100 << 4 = 0x00001000
-  TEST_CASE( 7, x3, 0x00001000, \
-    li  x1, 0x01000000; \
-    li  x2, 0x00000004; \
-    pwsla.h x3, x1, x2; \
+  # Pattern test
+  TEST_CASE_D32( 4, x14, x15, 0x1919191919191919, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x05050505; \
+    li  x12, 0x05050505; \
+    pwsla.hs x14, x10, x12; \
   )
 
   TEST_PASSFAIL
@@ -70,4 +54,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

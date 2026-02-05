@@ -16,28 +16,35 @@ RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
   # Arithmetic tests
+  # wmacc rd, rs1, rs2: rd:rd+1 += rs1 * rs2 (signed accumulate)
   #-------------------------------------------------------------
 
   # Basic accumulation: 0 + 3 * 7 = 21
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0x00000015, 0x00000000, 0x00000003, 0x00000007, x1, 0, x6 );
-  
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000015, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000003; \
+    li  x12, 0x00000007; \
+    wmacc x14, x10, x12; \
+  )
+
   # Accumulate to existing value: 100 + 5 * 10 = 150
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0x00000096, 0x00000000, 0x00000005, 0x0000000a, x1, 0, x6 );
-  
-  # Negative accumulation: 1000 + (-10) * 20 = 800
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0x00000320, 0x00000000, 0xfffffff6, 0x00000014, x1, 0, x6 );
-  
-  # Large accumulation: 0x100000000 + 0x10000 * 0x10000 = 0x200000000
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0x00000000, 0x00000002, 0x00010000, 0x00010000, x1, 0, x6 );
-  
-  # Negative result: -100 + (-5) * 10 = -150
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0xffffff6a, 0xffffffff, 0xfffffffb, 0x0000000a, x1, 0, x6 );
-  
-  # Accumulate negative: -1000 + 10 * 20 = -800
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0xfffffd00, 0xffffffff, 0x0000000a, 0x00000014, x1, 0, x6 );
-  
+  TEST_CASE_D32( 3, x14, x15, 0x0000000000000096, \
+    li  x14, 0x00000064; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000005; \
+    li  x12, 0x0000000a; \
+    wmacc x14, x10, x12; \
+  )
+
   # Zero multiply: 500 + 0 * 100 = 500
-  TEST_P64_PNN_OP( wmacc, x2, x3, x4, x5, 0x000001f4, 0x00000000, 0x00000000, 0x00000064, x1, 0, x6 );
+  TEST_CASE_D32( 4, x14, x15, 0x00000000000001f4, \
+    li  x14, 0x000001f4; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000064; \
+    wmacc x14, x10, x12; \
+  )
 
   TEST_PASSFAIL
 

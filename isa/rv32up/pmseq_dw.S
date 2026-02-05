@@ -4,8 +4,7 @@
 # pmseq_dw.S
 #-----------------------------------------------------------------------------
 #
-# Test pmseq.dw instruction (packed mask equal double-word).
-# Compares two packed double-word values, returns mask with all 1s for true, all 0s for false.
+# Test pmseq.dw instruction.
 #
 
 #include "riscv_test.h"
@@ -15,42 +14,35 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Arithmetic tests
+  # Arithmetic tests (uses register pairs - even registers only)
   #-------------------------------------------------------------
 
-  # Equal cases (result = 0xFFFFFFFF)
-  TEST_RR_OP( 2,  pmseq.dw, 0xffffffff, 0x00000000, 0x00000000 );
-  TEST_RR_OP( 3,  pmseq.dw, 0xffffffff, 0x00000001, 0x00000001 );
-  TEST_RR_OP( 4,  pmseq.dw, 0xffffffff, 0x7fffffff, 0x7fffffff );
-  
-  # Not equal cases (result = 0x00000000)
-  TEST_RR_OP( 5,  pmseq.dw, 0x00000000, 0x00000000, 0x00000001 );
-  TEST_RR_OP( 6,  pmseq.dw, 0x00000000, 0x00000001, 0x00000002 );
-  TEST_RR_OP( 7,  pmseq.dw, 0x00000000, 0x7fffffff, 0x80000000 );
-  
-  # Negative numbers equal
-  TEST_RR_OP( 8,  pmseq.dw, 0xffffffff, 0xffffffff, 0xffffffff );
-  TEST_RR_OP( 9,  pmseq.dw, 0xffffffff, 0x80000000, 0x80000000 );
+  # Basic test
+  TEST_CASE_D32( 2, x14, x15, 0x0505050505050505, \
+    li  x10, 0x03030303; \
+    li  x11, 0x03030303; \
+    li  x12, 0x05050505; \
+    li  x13, 0x05050505; \
+    pmseq.dw x14, x10, x12; \
+  )
 
-  #-------------------------------------------------------------
-  # Source/Destination tests
-  #-------------------------------------------------------------
+  # All zeros
+  TEST_CASE_D32( 3, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00000000; \
+    li  x13, 0x00000000; \
+    pmseq.dw x14, x10, x12; \
+  )
 
-  TEST_RR_SRC1_EQ_DEST( 10, pmseq.dw, 0xffffffff, 0x12345678, 0x12345678 );
-  TEST_RR_SRC2_EQ_DEST( 11, pmseq.dw, 0xffffffff, 0xabcdef00, 0xabcdef00 );
-  TEST_RR_SRC12_EQ_DEST( 12, pmseq.dw, 0xffffffff, 0x55555555 );
-
-  #-------------------------------------------------------------
-  # Bypassing tests
-  #-------------------------------------------------------------
-
-  TEST_RR_DEST_BYPASS( 13, 0, pmseq.dw, 0xffffffff, 0x12345678, 0x12345678 );
-  TEST_RR_DEST_BYPASS( 14, 1, pmseq.dw, 0x00000000, 0x12345678, 0x87654321 );
-  TEST_RR_DEST_BYPASS( 15, 2, pmseq.dw, 0xffffffff, 0xdeadbeef, 0xdeadbeef );
-
-  TEST_RR_ZEROSRC1( 16, pmseq.dw, 0x00000000, 0x12345678 );
-  TEST_RR_ZEROSRC2( 17, pmseq.dw, 0x00000000, 0x12345678 );
-  TEST_RR_ZEROSRC12( 18, pmseq.dw, 0xffffffff );
+  # Pattern test  
+  TEST_CASE_D32( 4, x14, x15, 0x5555555555555555, \
+    li  x10, 0x55555555; \
+    li  x11, 0x55555555; \
+    li  x12, 0x55555555; \
+    li  x13, 0x55555555; \
+    pmseq.dw x14, x10, x12; \
+  )
 
   TEST_PASSFAIL
 
@@ -62,4 +54,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

@@ -21,7 +21,7 @@ RVTEST_CODE_BEGIN
   # No shift: 0x0005 >> 0 = 0x05
   TEST_CASE_D32( 2, x10, x11, 0x00000005, \
     li  x10, 0x00000005; \
-    li  x11, 0x00000000; \
+    li  x10, 0x00000000; \
     li  x12, 0; \
     pnsra.bs x8, x10, x12; \
   )
@@ -29,7 +29,7 @@ RVTEST_CODE_BEGIN
   # Shift by 1: 0x0010 >> 1 = 0x08
   TEST_CASE_D32( 3, x10, x11, 0x00000008, \
     li  x10, 0x00000010; \
-    li  x11, 0x00000000; \
+    li  x10, 0x00000000; \
     li  x12, 1; \
     pnsra.bs x8, x10, x12; \
   )
@@ -37,7 +37,7 @@ RVTEST_CODE_BEGIN
   # Shift by 4: 0x00f0 >> 4 = 0x0f
   TEST_CASE_D32( 4, x10, x11, 0x0000000f, \
     li  x10, 0x000000f0; \
-    li  x11, 0x00000000; \
+    li  x10, 0x00000000; \
     li  x12, 4; \
     pnsra.bs x8, x10, x12; \
   )
@@ -45,7 +45,7 @@ RVTEST_CODE_BEGIN
   # Negative: 0xff00 >> 1 = 0xff80 (sign extended, masked to 8-bit = 0x80)
   TEST_CASE_D32( 5, x10, x11, 0xffffff80, \
     li  x10, 0x0000ff00; \
-    li  x11, 0xffffffff; \
+    li  x10, 0xffffffff; \
     li  x12, 1; \
     pnsra.bs x8, x10, x12; \
   )
@@ -53,7 +53,7 @@ RVTEST_CODE_BEGIN
   # Negative: 0x8000 >> 4 = 0xf800 (sign extended, masked to 8-bit = 0xf8)
   TEST_CASE_D32( 6, x10, x11, 0xfffffff8, \
     li  x10, 0x00008000; \
-    li  x11, 0xffffffff; \
+    li  x10, 0xffffffff; \
     li  x12, 4; \
     pnsra.bs x8, x10, x12; \
   )
@@ -61,7 +61,7 @@ RVTEST_CODE_BEGIN
   # Shift by 15: 0x7fff >> 15 = 0x0000
   TEST_CASE_D32( 7, x10, x11, 0x00000000, \
     li  x10, 0x00007fff; \
-    li  x11, 0x00000000; \
+    li  x10, 0x00000000; \
     li  x12, 15; \
     pnsra.bs x8, x10, x12; \
   )

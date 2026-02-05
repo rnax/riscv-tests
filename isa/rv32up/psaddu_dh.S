@@ -21,56 +21,56 @@ RVTEST_CODE_BEGIN
 
   # Basic add: 100 + 200 = 300 for each halfword
   TEST_CASE_D32( 2, x14, x15, 0x012c012c012c012c, \
-    li  x11, 0x00640064; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00c800c8; \
-    li  x16, 0x00000000; \
-    psaddu.dh x14, x11, x13; \
+    li  x10, 0x00640064; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00c800c8; \
+    li  x13, 0x00000000; \
+    psaddu.dh x14, x10, x12; \
   )
 
   # Saturation at max unsigned: 40000 + 30000 = 70000 (saturates to 65535)
   TEST_CASE_D32( 3, x14, x15, 0xffffffffffffffff, \
-    li  x11, 0x9c409c40; \
-    li  x12, 0x00000000; \
-    li  x13, 0x75307530; \
-    li  x16, 0x00000000; \
-    psaddu.dh x14, x11, x13; \
+    li  x10, 0x9c409c40; \
+    li  x11, 0x00000000; \
+    li  x12, 0x75307530; \
+    li  x13, 0x00000000; \
+    psaddu.dh x14, x10, x12; \
   )
 
   # No saturation: 20000 + 20000 = 40000
   TEST_CASE_D32( 4, x14, x15, 0x9c409c409c409c40, \
-    li  x11, 0x4e204e20; \
-    li  x12, 0x00000000; \
-    li  x13, 0x4e204e20; \
-    li  x16, 0x00000000; \
-    psaddu.dh x14, x11, x13; \
+    li  x10, 0x4e204e20; \
+    li  x11, 0x00000000; \
+    li  x12, 0x4e204e20; \
+    li  x13, 0x00000000; \
+    psaddu.dh x14, x10, x12; \
   )
 
   # Zero cases
   TEST_CASE_D32( 5, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
     li  x11, 0x00000000; \
     li  x12, 0x00000000; \
     li  x13, 0x00000000; \
-    li  x16, 0x00000000; \
-    psaddu.dh x14, x11, x13; \
+    psaddu.dh x14, x10, x12; \
   )
 
   # Mixed values: 1000 + 500 = 1500
   TEST_CASE_D32( 6, x14, x15, 0x05dc05dc05dc05dc, \
-    li  x11, 0x03e803e8; \
-    li  x12, 0x00000000; \
-    li  x13, 0x01f401f4; \
-    li  x16, 0x00000000; \
-    psaddu.dh x14, x11, x13; \
+    li  x10, 0x03e803e8; \
+    li  x11, 0x00000000; \
+    li  x12, 0x01f401f4; \
+    li  x13, 0x00000000; \
+    psaddu.dh x14, x10, x12; \
   )
 
   # Large values: 65535 + 1 = 65536 (saturates to 65535)
   TEST_CASE_D32( 7, x14, x15, 0xffffffffffffffff, \
-    li  x11, 0xffffffff; \
-    li  x12, 0x00000000; \
-    li  x13, 0x00010001; \
-    li  x16, 0x00000000; \
-    psaddu.dh x14, x11, x13; \
+    li  x10, 0xffffffff; \
+    li  x11, 0x00000000; \
+    li  x12, 0x00010001; \
+    li  x13, 0x00000000; \
+    psaddu.dh x14, x10, x12; \
   )
 
   TEST_PASSFAIL

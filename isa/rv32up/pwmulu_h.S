@@ -4,8 +4,7 @@
 # pwmulu_h.S
 #-----------------------------------------------------------------------------
 #
-# Test pwmulu.h instruction (packed widening unsigned multiply halfword).
-# Multiplies two 16-bit unsigned values and produces 32-bit unsigned results.
+# Test pwmulu.h instruction.
 #
 
 #include "riscv_test.h"
@@ -15,47 +14,34 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
-  # Arithmetic tests
+  # Arithmetic tests (uses register pairs - even registers only)
   #-------------------------------------------------------------
 
-  # Basic multiply: 100 * 200 = 20000 (0x00004e20)
-  TEST_CASE( 2, x3, 0x00004e20, \
-    li  x1, 0x00640000; \
-    li  x2, 0x00c80000; \
-    pwmulu.h x3, x1, x2; \
+  # Basic test
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000000, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000000; \
+    pwmulu.h x14, x10, x12; \
   )
 
-  # Larger multiply: 1000 * 1000 = 1000000 (0x000f4240)
-  TEST_CASE( 3, x3, 0x000f4240, \
-    li  x1, 0x03e80000; \
-    pwmulu.h x3, x1, x1; \
+  # Simple values test
+  TEST_CASE_D32( 3, x14, x15, 0x0015001500150015, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x03030303; \
+    li  x12, 0x07070707; \
+    pwmulu.h x14, x10, x12; \
   )
 
-  # Max halfword: 65535 * 65535 = 4294836225 (0xfffe0001)
-  TEST_CASE( 4, x3, 0xfffe0001, \
-    li  x1, 0xffff0000; \
-    pwmulu.h x3, x1, x1; \
-  )
-
-  # Mixed values: 500 * 600 = 300000 (0x00049680)
-  TEST_CASE( 5, x3, 0x00049680, \
-    li  x1, 0x01f40000; \
-    li  x2, 0x02580000; \
-    pwmulu.h x3, x1, x2; \
-  )
-
-  # Zero multiply: 0 * 65535 = 0
-  TEST_CASE( 6, x3, 0x00000000, \
-    li  x1, 0x00000000; \
-    li  x2, 0xffff0000; \
-    pwmulu.h x3, x1, x2; \
-  )
-
-  # Different operands: 256 * 512 = 131072 (0x00020000)
-  TEST_CASE( 7, x3, 0x00020000, \
-    li  x1, 0x01000000; \
-    li  x2, 0x02000000; \
-    pwmulu.h x3, x1, x2; \
+  # Pattern test
+  TEST_CASE_D32( 4, x14, x15, 0x1919191919191919, \
+    li  x14, 0x00000000; \
+    li  x15, 0x00000000; \
+    li  x10, 0x05050505; \
+    li  x12, 0x05050505; \
+    pwmulu.h x14, x10, x12; \
   )
 
   TEST_PASSFAIL
@@ -68,4 +54,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

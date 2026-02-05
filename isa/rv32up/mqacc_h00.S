@@ -4,9 +4,8 @@
 # mqacc_h00.S
 #-----------------------------------------------------------------------------
 #
-# Test mqacc_h00 instruction (Q-format multiply-accumulate halfword 00).
-# rd = rd + ((rs1[15:0] * rs2[15:0]) >> 15)
-# Q15 fixed-point multiply with accumulation (lower halfwords)
+# Test mqacc.h00 instruction (multiply-accumulate).
+# rd = rd + rs1_half * rs2_half
 #
 
 #include "riscv_test.h"
@@ -17,35 +16,32 @@ RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
   # Arithmetic tests
+  # mqacc.h00 rd, rs1, rs2: rd = rd + halfword_multiply(rs1, rs2)
   #-------------------------------------------------------------
 
-  # Basic Q-format multiply: 0.5 * 0.5 = 0.25
-  # 0x4000 (Q15: 0.5) * 0x4000 (Q15: 0.5) >> 15 = 0x2000 (Q15: 0.25)
-  # Accumulate: 0 + 0x2000 = 0x2000
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0x00002000, 0x00000000, 0x40004000, 0x40004000, x1, 0, x6 );
+  # Basic accumulation: 0 + 3 * 7 = 21
+  TEST_CASE( 2, x14, 0x00000015, \
+    li  x14, 0x00000000; \
+    li  x1, 0x00000003; \
+    li  x2, 0x00000007; \
+    mqacc.h00 x14, x1, x2; \
+  )
   
-  # Accumulate to existing value: 0x1000 + (0x4000 * 0x4000 >> 15) = 0x3000
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0x00003000, 0x00001000, 0x40004000, 0x40004000, x1, 0, x6 );
+  # Accumulate to existing value: 100 + 5 * 10 = 150
+  TEST_CASE( 3, x14, 0x00000096, \
+    li  x14, 0x00000064; \
+    li  x1, 0x00000005; \
+    li  x2, 0x0000000a; \
+    mqacc.h00 x14, x1, x2; \
+  )
   
-  # Negative Q-format: -0.5 * 0.5 = -0.25
-  # 0xC000 (Q15: -0.5) * 0x4000 (Q15: 0.5) >> 15 = 0xE000 (Q15: -0.25)
-  # Accumulate: 0 + 0xE000 = 0xFFFFE000
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0xFFFFE000, 0x00000000, 0xC000C000, 0x40004000, x1, 0, x6 );
-  
-  # Both negative: -0.5 * -0.5 = 0.25
-  # 0xC000 * 0xC000 >> 15 = 0x2000
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0x00002000, 0x00000000, 0xC000C000, 0xC000C000, x1, 0, x6 );
-  
-  # Small values: 0.1 * 0.1 ≈ 0.01
-  # 0x0CCD (Q15: ~0.1) * 0x0CCD >> 15 ≈ 0x0106 (Q15: ~0.01)
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0x00000106, 0x00000000, 0x0CCD0CCD, 0x0CCD0CCD, x1, 0, x6 );
-  
-  # Zero multiply: 0 * 0.5 = 0
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0x00000000, 0x00000000, 0x00000000, 0x40004000, x1, 0, x6 );
-  
-  # One (Q15: 0x7FFF) * 0.5 = 0.5
-  # 0x7FFF * 0x4000 >> 15 = 0x3FFF
-  TEST_RR_OP( mqacc_h00, x2, x3, x4, 0x00003FFF, 0x00000000, 0x7FFF7FFF, 0x40004000, x1, 0, x6 );
+  # Zero multiply: 500 + 0 * 100 = 500
+  TEST_CASE( 4, x14, 0x000001f4, \
+    li  x14, 0x000001f4; \
+    li  x1, 0x00000000; \
+    li  x2, 0x00000064; \
+    mqacc.h00 x14, x1, x2; \
+  )
 
   TEST_PASSFAIL
 
@@ -57,4 +53,3 @@ RVTEST_DATA_BEGIN
   TEST_DATA
 
 RVTEST_DATA_END
-

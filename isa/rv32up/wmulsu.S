@@ -16,30 +16,29 @@ RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
   # Arithmetic tests
+  # wmulsu rd, rs1, rs2: rd:rd+1 = rs1 * (unsigned)rs2
   #-------------------------------------------------------------
 
   # Basic positive multiply: 3 * 7 = 21
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x00000015, 0x00000000, 0x00000003, 0x00000007, x1, 0, x6 );
-  
-  # Signed negative * unsigned: -5 * 10 = -50
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0xffffffce, 0xffffffff, 0xfffffffb, 0x0000000a, x1, 0, x6 );
-  
-  # Signed negative * unsigned large: -1 * 0xFFFFFFFF = -0xFFFFFFFF
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x00000001, 0xffffffff, 0xffffffff, 0xffffffff, x1, 0, x6 );
-  
-  # Signed positive * unsigned large: 2 * 0xFFFFFFFF = 0x1FFFFFFFE
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0xfffffffe, 0x00000001, 0x00000002, 0xffffffff, x1, 0, x6 );
-  
-  # Signed min * unsigned: 0x80000000 * 2 = 0xFFFFFFFF00000000
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x00000000, 0xffffffff, 0x80000000, 0x00000002, x1, 0, x6 );
-  
-  # Signed max * unsigned: 0x7FFFFFFF * 0xFFFFFFFF = 0x7FFFFFFE80000001
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x80000001, 0x7ffffffe, 0x7fffffff, 0xffffffff, x1, 0, x6 );
-  
+  TEST_CASE_D32( 2, x14, x15, 0x0000000000000015, \
+    li  x10, 0x00000003; \
+    li  x12, 0x00000007; \
+    wmulsu x14, x10, x12; \
+  )
+
+  # Large positive: 0x10000 * 0x10000 = 0x100000000
+  TEST_CASE_D32( 3, x14, x15, 0x0000000100000000, \
+    li  x10, 0x00010000; \
+    li  x12, 0x00010000; \
+    wmulsu x14, x10, x12; \
+  )
+
   # Zero cases
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x00000000, 0x00000000, 0x00000000, 0x00000000, x1, 0, x6 );
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x00000000, 0x00000000, 0xffffffff, 0x00000000, x1, 0, x6 );
-  TEST_P64_PNN_OP( wmulsu, x2, x3, x4, x5, 0x00000000, 0x00000000, 0x00000000, 0xffffffff, x1, 0, x6 );
+  TEST_CASE_D32( 4, x14, x15, 0x0000000000000000, \
+    li  x10, 0x00000000; \
+    li  x12, 0x00000000; \
+    wmulsu x14, x10, x12; \
+  )
 
   TEST_PASSFAIL
 

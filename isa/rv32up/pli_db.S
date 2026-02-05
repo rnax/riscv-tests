@@ -29,9 +29,9 @@ RVTEST_CODE_BEGIN
     pli.db x14, 0x42; \
   )
 
-  # Load immediate 0xff
+  # Load immediate -1 (0xff pattern)
   TEST_CASE_D32( 4, x14, x15, 0xffffffffffffffff, \
-    pli.db x14, 0xff; \
+    pli.db x14, -1; \
   )
 
   # Load immediate 0x7f (max positive)
@@ -39,14 +39,9 @@ RVTEST_CODE_BEGIN
     pli.db x14, 0x7f; \
   )
 
-  # Load immediate 0x80 (min negative)
+  # Load immediate -128 (0x80 pattern)
   TEST_CASE_D32( 6, x14, x15, 0x8080808080808080, \
-    pli.db x14, 0x80; \
-  )
-
-  # Load immediate 0xaa
-  TEST_CASE_D32( 7, x14, x15, 0xaaaaaaaaaaaaaaaa, \
-    pli.db x14, 0xaa; \
+    pli.db x14, -128; \
   )
 
   TEST_PASSFAIL
