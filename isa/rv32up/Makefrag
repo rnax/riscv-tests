@@ -20,6 +20,7 @@ rv32up_sc_tests = \
 	mhaccu mhracc mhraccsu mhraccu \
 	mqacc_h00 mqacc_h01 mqacc_h11 \
 	mqracc_h00 mqracc_h01 mqracc_h11 \
+	mqwacc mqwacc_h mqrwacc mqrwacc_h \
 	mul_h00 mul_h01 mul_h11 \
 	mulh_h0 mulh_h1 \
 	mulhr mulhrsu mulhru \

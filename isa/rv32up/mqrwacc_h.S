@@ -1,10 +1,10 @@
 # See LICENSE for license details.
 
 #*****************************************************************************
-# pmqwacc.S
+# mqrwacc_h.S
 #-----------------------------------------------------------------------------
 #
-# Test pmqwacc instruction.
+# Test mqrwacc.h instruction.
 #
 
 #include "riscv_test.h"
@@ -23,7 +23,7 @@ RVTEST_CODE_BEGIN
     li  x15, 0x00000000; \
     li  x10, 0x00000000; \
     li  x12, 0x00000000; \
-    pmqwacc x14, x10, x12; \
+    mqrwacc.h x14, x10, x12; \
   )
 
   # Simple values test
@@ -32,7 +32,7 @@ RVTEST_CODE_BEGIN
     li  x15, 0x00000000; \
     li  x10, 0x03030303; \
     li  x12, 0x07070707; \
-    pmqwacc x14, x10, x12; \
+    mqrwacc.h x14, x10, x12; \
   )
 
   # Pattern test
@@ -41,7 +41,7 @@ RVTEST_CODE_BEGIN
     li  x15, 0x00000000; \
     li  x10, 0x05050505; \
     li  x12, 0x05050505; \
-    pmqwacc x14, x10, x12; \
+    mqrwacc.h x14, x10, x12; \
   )
 
   TEST_PASSFAIL
