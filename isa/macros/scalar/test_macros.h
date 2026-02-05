@@ -125,6 +125,106 @@ test_ ## testnum: \
     )
 
 #-----------------------------------------------------------------------
+# Tests for an instruction with register-immediate operands (P-extension)
+#-----------------------------------------------------------------------
+
+#define TEST_RI_OP( testnum, inst, result, val1, imm ) \
+    TEST_CASE( testnum, x14, result, \
+      li  x1, MASK_XLEN(val1); \
+      inst x14, x1, imm; \
+    )
+
+#define TEST_RI_SRC1_EQ_DEST( testnum, inst, result, val1, imm ) \
+    TEST_CASE( testnum, x1, result, \
+      li  x1, MASK_XLEN(val1); \
+      inst x1, x1, imm; \
+    )
+
+#define TEST_RI_DEST_BYPASS( testnum, nop_cycles, inst, result, val1, imm ) \
+    TEST_CASE( testnum, x6, result, \
+      li  x4, 0; \
+1:    li  x1, MASK_XLEN(val1); \
+      inst x14, x1, imm; \
+      TEST_INSERT_NOPS_ ## nop_cycles \
+      addi  x6, x14, 0; \
+      addi  x4, x4, 1; \
+      li  x5, 2; \
+      bne x4, x5, 1b \
+    )
+
+#define TEST_RI_SRC1_BYPASS( testnum, nop_cycles, inst, result, val1, imm ) \
+    TEST_CASE( testnum, x14, result, \
+      li  x4, 0; \
+1:    li  x1, MASK_XLEN(val1); \
+      TEST_INSERT_NOPS_ ## nop_cycles \
+      inst x14, x1, imm; \
+      addi  x4, x4, 1; \
+      li  x5, 2; \
+      bne x4, x5, 1b \
+    )
+
+#define TEST_RI_ZEROSRC1( testnum, inst, result, imm ) \
+    TEST_CASE( testnum, x1, result, \
+      inst x1, x0, imm; \
+    )
+
+#define TEST_RI_ZERODEST( testnum, inst, val1, imm ) \
+    TEST_CASE( testnum, x0, 0, \
+      li  x1, MASK_XLEN(val1); \
+      inst x0, x1, imm; \
+    )
+
+#-----------------------------------------------------------------------
+# Tests for register pair instructions (RV32 P-extension)
+#-----------------------------------------------------------------------
+
+#define TEST_RR_OP_PAIR( testnum, inst, result_lo, result_hi, val1_lo, val1_hi, val2_lo, val2_hi ) \
+test_ ## testnum: \
+    li  x10, MASK_XLEN(val1_lo); \
+    li  x11, MASK_XLEN(val1_hi); \
+    li  x12, MASK_XLEN(val2_lo); \
+    li  x13, MASK_XLEN(val2_hi); \
+    inst x14, x10, x12; \
+    la  x15, test_ ## testnum ## _data ; \
+    lw  x7, 0(x15); \
+    lw  x15, 4(x15); \
+    li  TESTNUM, testnum; \
+    bne x14, x7, fail; \
+    bne x15, x15, fail; \
+    .pushsection .data; \
+    .align 3; \
+    test_ ## testnum ## _data: \
+    .word result_lo; \
+    .word result_hi; \
+    .popsection
+
+#define TEST_RI_OP_PAIR( testnum, inst, result_lo, result_hi, val1_lo, val1_hi, imm ) \
+test_ ## testnum: \
+    li  x10, MASK_XLEN(val1_lo); \
+    li  x11, MASK_XLEN(val1_hi); \
+    inst x14, x10, imm; \
+    la  x15, test_ ## testnum ## _data ; \
+    lw  x7, 0(x15); \
+    lw  x15, 4(x15); \
+    li  TESTNUM, testnum; \
+    bne x14, x7, fail; \
+    bne x15, x15, fail; \
+    .pushsection .data; \
+    .align 3; \
+    test_ ## testnum ## _data: \
+    .word result_lo; \
+    .word result_hi; \
+    .popsection
+
+#define TEST_P64_PNN_OP( testnum, inst, result, val1, val2, val3 ) \
+    TEST_CASE( testnum, x14, result, \
+      li  x10, MASK_XLEN(val1); \
+      li  x11, MASK_XLEN(val2); \
+      li  x12, MASK_XLEN(val3); \
+      inst x14, x10, x11, x12; \
+    )
+
+#-----------------------------------------------------------------------
 # Tests for an instruction with register-register operands
 #-----------------------------------------------------------------------
 
