@@ -43,7 +43,7 @@ RVTEST_CODE_BEGIN
     psrari.h x14, x13, 4; \
   )
 
-  # Positive value: 0x7fff7fff >> 1 + round = 0x4000 4000
+  # Positive value: 0x7fff7fff >> 1 + round = 0x40004000
   TEST_CASE( 6, x14, 0x40004000, \
     li  x13, 0x7fff7fff; \
     psrari.h x14, x13, 1; \

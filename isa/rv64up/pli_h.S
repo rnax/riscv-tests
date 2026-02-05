@@ -17,36 +17,37 @@ RVTEST_CODE_BEGIN
 
   #-------------------------------------------------------------
   # Arithmetic tests
+  # Note: pli.h immediate range is -512 to 511
   #-------------------------------------------------------------
 
   # Load immediate 0x0000
-  TEST_CASE( 2, x14, 0x00000000, \
-    pli.h x14, 0x0000; \
+  TEST_CASE( 2, x14, 0x0000000000000000, \
+    pli.h x14, 0x00; \
   )
 
-  # Load immediate 0x1234
-  TEST_CASE( 3, x14, 0x12341234, \
-    pli.h x14, 0x1234; \
+  # Load immediate 0x42 (positive value)
+  TEST_CASE( 3, x14, 0x0042004200420042, \
+    pli.h x14, 0x42; \
   )
 
-  # Load immediate 0xffff
-  TEST_CASE( 4, x14, 0xffffffff, \
-    pli.h x14, 0xffff; \
+  # Load immediate -1 (0xffff sign-extended)
+  TEST_CASE( 4, x14, 0xffffffffffffffff, \
+    pli.h x14, -1; \
   )
 
-  # Load immediate 0x7fff (max positive)
-  TEST_CASE( 5, x14, 0x7fff7fff, \
-    pli.h x14, 0x7fff; \
+  # Load immediate 511 (max positive in range)
+  TEST_CASE( 5, x14, 0x01ff01ff01ff01ff, \
+    pli.h x14, 511; \
   )
 
-  # Load immediate 0x8000 (min negative)
-  TEST_CASE( 6, x14, 0x80008000, \
-    pli.h x14, 0x8000; \
+  # Load immediate -512 (min negative in range)
+  TEST_CASE( 6, x14, 0xfe00fe00fe00fe00, \
+    pli.h x14, -512; \
   )
 
-  # Load immediate 0xaaaa
-  TEST_CASE( 7, x14, 0xaaaaaaaa, \
-    pli.h x14, 0xaaaa; \
+  # Load immediate -86 (0xffaa sign-extended)
+  TEST_CASE( 7, x14, 0xffaaffaaffaaffaa, \
+    pli.h x14, -86; \
   )
 
   TEST_PASSFAIL

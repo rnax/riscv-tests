@@ -20,33 +20,33 @@ RVTEST_CODE_BEGIN
   #-------------------------------------------------------------
 
   # Load immediate 0x00
-  TEST_CASE( 2, x14, 0x00000000, \
+  TEST_CASE( 2, x14, 0x0000000000000000, \
     pli.b x14, 0x00; \
   )
 
   # Load immediate 0x42
-  TEST_CASE( 3, x14, 0x42424242, \
+  TEST_CASE( 3, x14, 0x4242424242424242, \
     pli.b x14, 0x42; \
   )
 
-  # Load immediate 0xff
-  TEST_CASE( 4, x14, 0xffffffff, \
-    pli.b x14, 0xff; \
+  # Load immediate -1 (0xff)
+  TEST_CASE( 4, x14, 0xffffffffffffffff, \
+    pli.b x14, -1; \
   )
 
   # Load immediate 0x7f (max positive)
-  TEST_CASE( 5, x14, 0x7f7f7f7f, \
+  TEST_CASE( 5, x14, 0x7f7f7f7f7f7f7f7f, \
     pli.b x14, 0x7f; \
   )
 
-  # Load immediate 0x80 (min negative)
-  TEST_CASE( 6, x14, 0x80808080, \
-    pli.b x14, 0x80; \
+  # Load immediate -128 (0x80)
+  TEST_CASE( 6, x14, 0x8080808080808080, \
+    pli.b x14, -128; \
   )
 
-  # Load immediate 0xaa
-  TEST_CASE( 7, x14, 0xaaaaaaaa, \
-    pli.b x14, 0xaa; \
+  # Load immediate -86 (0xaa)
+  TEST_CASE( 7, x14, 0xaaaaaaaaaaaaaaaa, \
+    pli.b x14, -86; \
   )
 
   TEST_PASSFAIL

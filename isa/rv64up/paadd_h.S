@@ -28,7 +28,7 @@ RVTEST_CODE_BEGIN
   TEST_RR_OP( 4,  paadd.h, 0x00030003, 0x00030003, 0x00040004 );
   
   # Negative numbers: (-4 + 6) >> 1 = 1 (signed)
-  TEST_RR_OP( 5,  paadd.h, 0x00010001, 0xfffc fffc, 0x00060006 );
+  TEST_RR_OP( 5,  paadd.h, 0x00010001, 0xfffcfffc, 0x00060006 );
   
   # All negative: (-10 + -20) >> 1 = -15
   TEST_RR_OP( 6,  paadd.h, 0xfff1fff1, 0xfff6fff6, 0xffecffec );

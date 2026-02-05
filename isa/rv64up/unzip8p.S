@@ -24,7 +24,7 @@ RVTEST_CODE_BEGIN
   TEST_RR_OP( 2,  unzip8p, 0x02020101, 0x02010201, 0x00000000 );
   
   # rs1=0xaaffaaff -> even: 0xffff, odd: 0xaaaa
-  TEST_RR_OP( 3,  unzip8p, 0xaaaaff ff, 0xaaffaaff, 0x00000000 );
+  TEST_RR_OP( 3,  unzip8p, 0xaaaaffff, 0xaaffaaff, 0x00000000 );
   
   # rs1=0x07080304 -> even: 0x0304, odd: 0x0708
   TEST_RR_OP( 4,  unzip8p, 0x07080304, 0x07080304, 0x00000000 );
