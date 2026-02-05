@@ -23,6 +23,7 @@ include $(src_dir)/rv64ssvnapot/Makefrag
 include $(src_dir)/rv64mi/Makefrag
 include $(src_dir)/rv64mzicbo/Makefrag
 include $(src_dir)/hypervisor/Makefrag
+include $(src_dir)/rv64up/Makefrag
 endif
 include $(src_dir)/rv32ui/Makefrag
 include $(src_dir)/rv32uc/Makefrag
@@ -116,6 +117,7 @@ $(eval $(call compile_template,rv64uzbb,-march=rv64g_zbb -mabi=lp64))
 $(eval $(call compile_template,rv64uzbc,-march=rv64g_zbc -mabi=lp64))
 $(eval $(call compile_template,rv64uzbs,-march=rv64g_zbs -mabi=lp64))
 $(eval $(call compile_template,rv64mzicbo,-march=rv64g_zicboz -mabi=lp64))
+$(eval $(call compile_template,rv64up,-march=rv64gcp -mabi=lp64))
 $(eval $(call compile_template,rv64si,-march=rv64g -mabi=lp64))
 $(eval $(call compile_template,rv64ssvnapot,-march=rv64g -mabi=lp64))
 $(eval $(call compile_template,rv64mi,-march=rv64g -mabi=lp64))

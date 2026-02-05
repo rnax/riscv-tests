@@ -2,8 +2,9 @@
 # Makefrag for rv32up tests
 #-----------------------------------------------------------------------
 
+# RV32-only P-extension tests (require_rv32)
 rv32up_sc_tests = \
-	aadd aaddu addd asub asubu \
+	aadd aaddu addd asub asubu subd \
 	sadd saddu ssub ssubu sati usati \
 	srari ssh1sadd ssha sshar sslai \
 	mseq mslt msltu \
@@ -84,7 +85,45 @@ rv32up_sc_tests = \
 	pwmul_b pwmul_h pwmulu_b pwmulu_h pwmulsu_b pwmulsu_h \
 	pwmacc_h pwmaccu_h pwmaccsu_h \
 	pwsll_bs pwsll_hs pwslli_b pwslli_h \
-	pwsla_bs pwsla_hs pwslai_b pwslai_h
+	pwsla_bs pwsla_hs pwslai_b pwslai_h \
+	abs cls merge mvm mvmn slx srx \
+	paadd_b paadd_h paaddu_b paaddu_h \
+	paas_hx pasa_hx pas_hx \
+	pabd_b pabd_h pabdu_b pabdu_h pabdsumu_b pabdsumau_b \
+	padd_b padd_bs padd_h padd_hs \
+	pasub_b pasub_h pasubu_b pasubu_h \
+	pli_b pli_h plui_h \
+	pm2add_h pm2add_hx pm2adda_h pm2adda_hx \
+	pm2addu_h pm2addau_h pm2addsu_h pm2addasu_h \
+	pm2sadd_h pm2sadd_hx pm2sub_h pm2sub_hx pm2suba_h pm2suba_hx \
+	pm4add_b pm4adda_b pm4addu_b pm4addau_b pm4addsu_b pm4addasu_b \
+	pmax_b pmax_h pmaxu_b pmaxu_h \
+	pmin_b pmin_h pminu_b pminu_h \
+	pmhacc_h pmhacc_h_b0 pmhacc_h_b1 \
+	pmhaccsu_h pmhaccsu_h_b0 pmhaccsu_h_b1 pmhaccu_h \
+	pmhracc_h pmhraccsu_h pmhraccu_h \
+	pmq2add_h pmq2adda_h pmqr2add_h pmqr2adda_h \
+	pmseq_b pmseq_h pmslt_b pmslt_h pmsltu_b pmsltu_h \
+	pmul_h_b00 pmul_h_b01 pmul_h_b11 \
+	pmulh_h pmulh_h_b0 pmulh_h_b1 \
+	pmulhr_h pmulhrsu_h pmulhru_h \
+	pmulhsu_h pmulhsu_h_b0 pmulhsu_h_b1 pmulhu_h \
+	pmulq_h pmulqr_h \
+	pmulsu_h_b00 pmulsu_h_b11 \
+	pmulu_h_b00 pmulu_h_b01 pmulu_h_b11 \
+	ppaire_b ppaire_h ppaireo_b ppaireo_h \
+	ppairo_b ppairo_h ppairoe_b ppairoe_h \
+	predsum_bs predsum_hs predsumu_bs predsumu_hs \
+	psabs_b psabs_h psadd_b psadd_h psaddu_b psaddu_h \
+	psa_hx psas_hx pssa_hx psati_h pusati_h \
+	psext_h_b psh1add_h pssh1sadd_h \
+	psll_bs psll_hs pslli_b pslli_h \
+	psra_bs psra_hs psrai_b psrai_h psrari_h \
+	psrl_bs psrl_hs psrli_b psrli_h \
+	pssha_hs psshar_hs psslai_h \
+	pssub_b pssub_h pssubu_b pssubu_h \
+	psub_b psub_h \
+	zip8p zip8hp unzip8p unzip8hp unzip16p unzip16hp
 
 rv32up_p_tests = $(addprefix rv32up-p-, $(rv32up_sc_tests))
 rv32up_v_tests = $(addprefix rv32up-v-, $(rv32up_sc_tests))
