@@ -17,15 +17,15 @@ RVTEST_CODE_BEGIN
   # Arithmetic tests
   #-------------------------------------------------------------
 
-  # mhacc.h0: rd = rd + (rs1 * rs2[15:0])[63:32] (signed)
-  # Test: 10 + high32(0x10000 * 0x100) = 10 + 0 = 10 (product too small)
-  TEST_CASE( 2, x14, 10, li x14, 10; li a1, 0x10000; li a2, 0x100; mhacc.h0 x14, a1, a2 );
+  # mhacc.h0: rd = rd + to_bits(48, rs1 * rs2[15:0])[47:16] (signed, p >> 16)
+  # Test: 10 + (0x10000 * 0x100 >> 16) = 10 + 256 = 266
+  TEST_CASE( 2, x14, 266, li x14, 10; li a1, 0x10000; li a2, 0x100; mhacc.h0 x14, a1, a2 );
 
-  # Test: 0 + high32(0x10000000 * 0x10) = 0 + 1 = 1
-  TEST_CASE( 3, x14, 1, li x14, 0; li a1, 0x10000000; li a2, 0x10; mhacc.h0 x14, a1, a2 );
+  # Test: 0 + (0x10000000 * 0x10 >> 16) = 0 + 65536 = 65536
+  TEST_CASE( 3, x14, 65536, li x14, 0; li a1, 0x10000000; li a2, 0x10; mhacc.h0 x14, a1, a2 );
 
-  # Test: 5 + high32(0x20000000 * 0x10) = 5 + 2 = 7
-  TEST_CASE( 4, x14, 7, li x14, 5; li a1, 0x20000000; li a2, 0x10; mhacc.h0 x14, a1, a2 );
+  # Test: 5 + (0x20000000 * 0x10 >> 16) = 5 + 131072 = 131077
+  TEST_CASE( 4, x14, 131077, li x14, 5; li a1, 0x20000000; li a2, 0x10; mhacc.h0 x14, a1, a2 );
 
   TEST_PASSFAIL
 
