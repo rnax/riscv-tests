@@ -41,8 +41,8 @@ RVTEST_CODE_BEGIN
 
   # Test case 4: Left shift by large amount (>= 16)
   # rs1 = 0x00010001, rs2 = 0x00000010 (shift left by 16)
-  # Expected: 0x00000000 (result is 0 in each halfword)
-  TEST_RR_OP( 5, psshl.hs, 0x00000000, 0x00010001, 0x00000010 );
+  # Expected: 0xFFFFFFFF (0x0001 with sshamt=16: shx=0x00010000 > 0xFFFF, saturates to 0xFFFF in each halfword)
+  TEST_RR_OP( 5, psshl.hs, 0xFFFFFFFF, 0x00010001, 0x00000010 );
 
   # Test case 5: Right shift (negative shamt)
   # rs1 = 0x80008000, rs2 = 0xFFFFFFFC (shift right by 4)

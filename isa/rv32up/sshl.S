@@ -41,8 +41,8 @@ RVTEST_CODE_BEGIN
 
   # Test case 4: Left shift by large amount (>= 32)
   # rs1 = 0x00000001, rs2 = 0x00000020 (shift left by 32)
-  # Expected: 0x00000000 (result is 0)
-  TEST_RR_OP_VXSAT( 5, sshl, 0x00000000, 0x00000001, 0x00000020, 0  );
+  # Expected: 0xFFFFFFFF (saturated: 1<<32 = 0x100000000 > 0xFFFFFFFF)
+  TEST_RR_OP_VXSAT( 5, sshl, 0xFFFFFFFF, 0x00000001, 0x00000020, 1  );
 
   # Test case 5: Right shift (negative shamt)
   # rs1 = 0x80000000, rs2 = 0xFFFFFFFC (shift right by 4)

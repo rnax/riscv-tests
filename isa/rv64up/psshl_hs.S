@@ -29,24 +29,26 @@ RVTEST_CODE_BEGIN
   # Expected: 0x00140014 (5 << 2 = 20 in each halfword)
   TEST_RR_OP_VXSAT( 2, psshl.hs, 0x00140014, 0x00050005, 0x00000002, 0  );
 
-  # Test case 2: Left shift with saturation
-  # rs1 = 0x40004000, rs2 = 0x00000002 (shift left by 2)
-  # Expected: 0xFFFFFFFF (saturated to 0xFFFF in each halfword)
-  TEST_RR_OP_VXSAT( 3, psshl.hs, 0xFFFFFFFF, 0x40004000, 0x00000002, 1  );
+  # Test case 2: Left shift with saturation (all 4 halfword lanes)
+  # rs1 = 0x4000400040004000, rs2 = 0x00000002 (shift left by 2)
+  # All 4 halfwords 0x4000<<2=0x10000>0xFFFF, saturate to 0xFFFF; result = 0xFFFFFFFFFFFFFFFF
+  TEST_RR_OP_VXSAT( 3, psshl.hs, 0xFFFFFFFFFFFFFFFF, 0x4000400040004000, 0x00000002, 1  );
+ 
 
   # Test case 3: Left shift by 0
   # rs1 = 0x12345678, rs2 = 0x00000000
   # Expected: 0x12345678 (no change)
   TEST_RR_OP_VXSAT( 4, psshl.hs, 0x12345678, 0x12345678, 0x00000000, 0  );
 
-  # Test case 4: Left shift by large amount (>= 16)
-  # rs1 = 0x00010001, rs2 = 0x00000010 (shift left by 16)
-  # Expected: 0x00000000 (result is 0 in each halfword)
-  TEST_RR_OP_VXSAT( 5, psshl.hs, 0x00000000, 0x00010001, 0x00000010, 0  );
+  # Test case 4: Left shift by large amount (>= 16), all 4 halfword lanes
+  # rs1 = 0x0001000100010001, rs2 = 0x00000010 (shift left by 16)
+  # All 4 halfwords 0x0001 with sshamt=16: shx=0x00010000>0xFFFF, saturate to 0xFFFF; result = 0xFFFFFFFFFFFFFFFF
+  TEST_RR_OP_VXSAT( 5, psshl.hs, 0xFFFFFFFFFFFFFFFF, 0x0001000100010001, 0x00000010, 1  );
 
   # Test case 5: Right shift (negative shamt)
   # rs1 = 0x80008000, rs2 = 0xFFFFFFFC (shift right by 4)
-  # Expected: 0x08000800 (logical right shift in each halfword)
+  # li loads 0x0000000080008000 on RV64 (positive, no sign-extension); upper halfwords 0x0000>>4=0x0000, lower 0x8000>>4=0x0800
+  # Expected: 0x08000800
   TEST_RR_OP_VXSAT( 6, psshl.hs, 0x08000800, 0x80008000, 0xFFFFFFFC, 0  );
 
   # Test case 6: Right shift by large negative amount (<= -16)
@@ -59,10 +61,10 @@ RVTEST_CODE_BEGIN
   # Expected: 0x091A2B3C
   TEST_RR_OP_VXSAT( 8, psshl.hs, 0x091A2B3C, 0x12345678, 0xFFFFFFFF, 0  );
 
-  # Test case 8: Saturation with maximum value
-  # rs1 = 0x7FFF7FFF, rs2 = 0x00000001 (shift left by 2)
-  # Expected: 0xFFFFFFFF (saturated in each halfword)
-  TEST_RR_OP_VXSAT( 9, psshl.hs, 0xFFFFFFFF, 0x7FFF7FFF, 0x00000002, 1  );
+  # Test case 8: Saturation with maximum value (all 4 halfword lanes)
+  # rs1 = 0x7FFF7FFF7FFF7FFF, rs2 = 0x00000002 (shift left by 2)
+  # All 4 halfwords 0x7FFF<<2=0x1FFFC>0xFFFF, saturate to 0xFFFF; result = 0xFFFFFFFFFFFFFFFF
+  TEST_RR_OP_VXSAT( 9, psshl.hs, 0xFFFFFFFFFFFFFFFF, 0x7FFF7FFF7FFF7FFF, 0x00000002, 1  );
 
   # Test case 9: Zero shifted
   # rs1 = 0x00000000, rs2 = 0x00000005
