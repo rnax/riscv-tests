@@ -14,21 +14,21 @@ RVTEST_RV32U
 RVTEST_CODE_BEGIN
 
   # pm2wsuba.h rd, rs1, rs2
-  # Widening 2-way multiply-sub accumulate: rd_pair += -rs1[15:0]*rs2[15:0] + rs1[31:16]*rs2[31:16]
+  # Widening 2-way multiply-sub accumulate: rd_pair += rs1[15:0]*rs2[15:0] - rs1[31:16]*rs2[31:16]
 
   # Test case 1: Simple accumulate (rd starts at 0)
-  # 0 + (-(1 * 1) + (2 * 2)) = -1 + 4 = 3
-  TEST_CASE( 2, x14, 0x00000003, \
+  # 0 + (1*1 - 2*2) = 1 - 4 = -3 => x14=0xfffffffd, x15=0xffffffff
+  TEST_CASE( 2, x14, 0xfffffffd, \
     li x14, 0x00000000; \
     li x15, 0x00000000; \
     li x10, 0x00020001; \
     li x12, 0x00020001; \
     pm2wsuba.h x14, x10, x12 );
-  TEST_CASE( 3, x15, 0x00000000, nop );
+  TEST_CASE( 3, x15, 0xffffffff, nop );
 
   # Test case 2: Accumulate with initial value
-  # 10 + (-(1 * 1) + (2 * 2)) = 10 + 3 = 13
-  TEST_CASE( 4, x14, 0x0000000d, \
+  # 10 + (1*1 - 2*2) = 10 + 1 - 4 = 7
+  TEST_CASE( 4, x14, 0x00000007, \
     li x14, 0x0000000a; \
     li x15, 0x00000000; \
     li x10, 0x00020001; \
