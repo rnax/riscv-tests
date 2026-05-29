@@ -6,7 +6,7 @@
 #
 # Test psll.dws instruction (packed shift left logical, double-word, word, by register).
 # RV32-only instruction using register pairs for 64-bit operations.
-# Shifts each word element left by the amount in rs2[7:0].
+# Shifts each word element left by the amount in rs2[4:0].
 # Note: rd and rs1 must be even registers (register-pair constraint).
 #
 
@@ -21,7 +21,7 @@ RVTEST_CODE_BEGIN
   #-------------------------------------------------------------
 
   # psll.dws rd, rs1, rs2
-  # rd (register pair) = rs1 (register pair) << rs2[7:0] (per word)
+  # rd (register pair) = rs1 (register pair) << rs2[4:0] (per word)
   # rd and rs1 must be even registers
 
   # Test 2: Shift by 1
@@ -65,13 +65,14 @@ RVTEST_CODE_BEGIN
     psll.dws x14, x10, x12 );
   TEST_CASE( 9, x15, 0x12345678, nop );
 
-  # Test 10: Shift by 32 or more (result is 0)
-  TEST_CASE( 10, x14, 0x00000000, \
+  # Test 10: Shift by 32 (shamt=32[4:0]=0, same as shift by 0)
+  # 0xFFFFFFFF << 0 = 0xFFFFFFFF
+  TEST_CASE( 10, x14, 0xFFFFFFFF, \
     li x10, 0xFFFFFFFF; \
     li x11, 0xFFFFFFFF; \
     li x12, 32; \
     psll.dws x14, x10, x12 );
-  TEST_CASE( 11, x15, 0x00000000, nop );
+  TEST_CASE( 11, x15, 0xFFFFFFFF, nop );
 
   # Test 12: All 0xFFFFFFFF shifted by 1
   # 0xFFFFFFFF << 1 = 0xFFFFFFFE (word)
