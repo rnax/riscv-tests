@@ -84,6 +84,13 @@ rv32up_sc_tests = \
 	wzip8p wzip16p \
 	psati_dh psati_dw pusati_dh pusati_dw \
 	psrai_db psrai_dh psrai_dw psrari_dh psrari_dw psrli_db psrli_dh psrli_dw \
+	padd_db_p0 padd_dh_p0 pssha_dhs_p0 padd_dw_p0 psext_dw_b_p0 \
+	pslli_dw_p0 psslai_dw_p0 psrari_dw_p0 padd_dws_p0 psll_dws_p0 \
+	psabs_db_p0 psslai_dh_p0 pli_db_p0 pli_dh_p0 plui_dh_p0 \
+	pwadd_b_p0 pwadd_h_p0 wadd_p0 wmul_p0 pwslli_b_p0 \
+	pwadda_b_p0 wmacc_p0 addd_p0 subd_p0 predsum_dbs_p0 \
+	ppaire_dh_p0 ppairo_dh_p0 wzip8p_p0 \
+	pnclip_bs_p0 pnclipi_b_p0 nsrl_p0 nsrli_p0 \
 
 rv32up_p_tests = $(addprefix rv32up-p-, $(rv32up_sc_tests))
 rv32up_v_tests = $(addprefix rv32up-v-, $(rv32up_sc_tests))
