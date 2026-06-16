@@ -1,0 +1,12 @@
+#=======================================================================
+# Makefrag for rv64uzvfofp8min tests
+#-----------------------------------------------------------------------
+
+rv64uzvfofp8min_sc_tests = \
+  vfwcvtbf16_f_f_v vfncvtbf16_f_f_w vfncvtbf16_sat_f_f_w vfncvt_f_f_q vfncvt_sat_f_f_q
+
+rv64uzvfofp8min_p_tests = $(addprefix rv64uzvfofp8min-p-, $(rv64uzvfofp8min_sc_tests))
+# v-tests intentionally omitted: env/v requires newlib (string.h) which the
+# bare-metal clang/lld toolchain used here does not provide. Re-enable when
+# building with a toolchain that includes newlib headers.
+# rv64uzvfofp8min_v_tests = $(addprefix rv64uzvfofp8min-v-, $(rv64uzvfofp8min_sc_tests))

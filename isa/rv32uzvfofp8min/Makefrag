@@ -1,0 +1,11 @@
+#=======================================================================
+# Makefrag for rv32uzvfofp8min tests
+#-----------------------------------------------------------------------
+
+rv32uzvfofp8min_sc_tests = \
+  vfwcvtbf16_f_f_v vfncvtbf16_f_f_w vfncvtbf16_sat_f_f_w \
+  vfncvt_f_f_q vfncvt_sat_f_f_q
+
+rv32uzvfofp8min_p_tests = $(addprefix rv32uzvfofp8min-p-, $(rv32uzvfofp8min_sc_tests))
+# v-tests intentionally omitted (env/v requires newlib).
+# rv32uzvfofp8min_v_tests = $(addprefix rv32uzvfofp8min-v-, $(rv32uzvfofp8min_sc_tests))

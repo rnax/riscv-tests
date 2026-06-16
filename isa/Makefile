@@ -16,6 +16,7 @@ include $(src_dir)/rv64ud/Makefrag
 include $(src_dir)/rv64up/Makefrag
 include $(src_dir)/rv64uziccid/Makefrag
 include $(src_dir)/rv64uzfh/Makefrag
+include $(src_dir)/rv64uzvfofp8min/Makefrag
 include $(src_dir)/rv64uzba/Makefrag
 include $(src_dir)/rv64uzbb/Makefrag
 include $(src_dir)/rv64uzbc/Makefrag
@@ -38,6 +39,7 @@ include $(src_dir)/rv32uf/Makefrag
 include $(src_dir)/rv32ud/Makefrag
 include $(src_dir)/rv32up/Makefrag
 include $(src_dir)/rv32uzfh/Makefrag
+include $(src_dir)/rv32uzvfofp8min/Makefrag
 include $(src_dir)/rv32uzba/Makefrag
 include $(src_dir)/rv32uzbb/Makefrag
 include $(src_dir)/rv32uzbc/Makefrag
@@ -57,7 +59,7 @@ default: all
 
 # CC_TYPE selects the toolchain. Default "gcc" preserves prior behavior; set
 # CC_TYPE=clang to build with LLVM clang + lld instead. Required when building
-# tests for extensions that gcc does not yet support.
+# tests for extensions that gcc does not yet support (e.g. experimental Zvfofp8min).
 CC_TYPE ?= gcc
 
 ifeq ($(CC_TYPE),clang)
@@ -93,10 +95,10 @@ vpath %.S $(src_dir)
 	$(RISCV_OBJDUMP) $< > $@
 
 %.out: %
-	$(RISCV_SIM) --isa=rv64gch_ziccid_zfh_zicboz_svnapot_zicntr_zba_zbb_zbkb_zbkx_zbc_zbs_zicond_zicclsm $< 2> $@
+	$(RISCV_SIM) --isa=rv64gch_ziccid_zfh_zicboz_svnapot_zicntr_zba_zbb_zbkb_zbkx_zbc_zbs_zicond_zicclsm_zvfofp8min $< 2> $@
 
 %.out32: %
-	$(RISCV_SIM) --isa=rv32gc_ziccid_zfh_zicboz_svnapot_zicntr_zba_zbb_zbkb_zbkx_zbc_zbs_zicond_zicclsm $< 2> $@
+	$(RISCV_SIM) --isa=rv32gc_ziccid_zfh_zicboz_svnapot_zicntr_zba_zbb_zbkb_zbkx_zbc_zbs_zicond_zicclsm_zvfofp8min $< 2> $@
 
 define compile_template
 
@@ -132,6 +134,12 @@ $(eval $(call compile_template,rv64ud,-march=rv64g -mabi=lp64d))
 $(eval $(call compile_template,rv64up,-march=rv64gp -mabi=lp64))
 $(eval $(call compile_template,rv64uziccid,-march=rv64g -mabi=lp64d))
 $(eval $(call compile_template,rv64uzfh,-march=rv64g_zfh -mabi=lp64d))
+# Zvfofp8min is still experimental in clang (v0.2) and unsupported by gcc.
+# ZVFOFP8MIN_FLAGS opts into clang's experimental extensions; gcc rejects
+# the -march string and the extension is silently dropped by the
+# COMPILER_SUPPORTS_* probe inside compile_template.
+ZVFOFP8MIN_FLAGS ?= $(if $(filter clang,$(CC_TYPE)),-menable-experimental-extensions)
+$(eval $(call compile_template,rv64uzvfofp8min,-march=rv64gv_zvfofp8min0p2 -mabi=lp64d $(ZVFOFP8MIN_FLAGS) -I$(src_dir)/macros))
 $(eval $(call compile_template,rv64uzba,-march=rv64g_zba -mabi=lp64d))
 $(eval $(call compile_template,rv64uzbb,-march=rv64g_zbb -mabi=lp64d))
 $(eval $(call compile_template,rv64uzbc,-march=rv64g_zbc -mabi=lp64d))
@@ -154,6 +162,7 @@ $(eval $(call compile_template,rv32uf,-march=rv32g -mabi=ilp32))
 $(eval $(call compile_template,rv32ud,-march=rv32g -mabi=ilp32))
 $(eval $(call compile_template,rv32up,-march=rv32gp -mabi=ilp32))
 $(eval $(call compile_template,rv32uzfh,-march=rv32g_zfh -mabi=ilp32))
+$(eval $(call compile_template,rv32uzvfofp8min,-march=rv32gv_zvfofp8min0p2 -mabi=ilp32d $(ZVFOFP8MIN_FLAGS) -I$(src_dir)/macros))
 $(eval $(call compile_template,rv32uzba,-march=rv32g_zba -mabi=ilp32))
 $(eval $(call compile_template,rv32uzbb,-march=rv32g_zbb -mabi=ilp32))
 $(eval $(call compile_template,rv32uzbc,-march=rv32g_zbc -mabi=ilp32))
