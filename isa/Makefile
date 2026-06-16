@@ -55,6 +55,18 @@ default: all
 # Build rules
 #--------------------------------------------------------------------
 
+# CC_TYPE selects the toolchain. Default "gcc" preserves prior behavior; set
+# CC_TYPE=clang to build with LLVM clang + lld instead. Required when building
+# tests for extensions that gcc does not yet support.
+CC_TYPE ?= gcc
+
+ifeq ($(CC_TYPE),clang)
+RISCV_CLANG  ?= clang
+RISCV_TARGET ?= riscv$(XLEN)-unknown-elf
+RISCV_GCC    ?= $(RISCV_CLANG) --target=$(RISCV_TARGET) -fuse-ld=lld
+RISCV_OBJDUMP ?= llvm-objdump --disassemble-all --disassemble-zeroes --section=.text --section=.text.startup --section=.text.init --section=.data
+# clang is a single binary; no `which` probe needed — fail at compile if missing.
+else
 RISCV_PREFIX ?= riscv$(XLEN)-unknown-elf-
 ifeq ($(shell which $(RISCV_PREFIX)gcc 2> /dev/null),)
 	ALT_XLEN := $(if $(call eq,$(XLEN),64),32,64)
@@ -66,8 +78,10 @@ endif
 
 RISCV_PREFIX ?= riscv$(XLEN)-unknown-elf-
 RISCV_GCC ?= $(RISCV_PREFIX)gcc
-RISCV_GCC_OPTS ?= -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles
 RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble-all --disassemble-zeroes --section=.text --section=.text.startup --section=.text.init --section=.data
+endif
+
+RISCV_GCC_OPTS ?= -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles
 RISCV_SIM ?= spike
 
 vpath %.S $(src_dir)
